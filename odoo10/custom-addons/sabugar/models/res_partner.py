@@ -11,7 +11,7 @@ class ResPartner(models.Model):
     mobile1 = fields.Char("Mobile 1")
     mobile2 = fields.Char("Mobile 2")
     whatsapp = fields.Char("Whatsapp")
-    district_name = fields.Char()
+    district_name = fields.Char(related='zip_id.district_name')
     zip_id = fields.Many2one('res.better.zip', 'City/Location')
     agency = fields.Boolean(string='Is a Agency', default=True,
                                help="Check this box if this contact is a agency.")
@@ -19,6 +19,31 @@ class ResPartner(models.Model):
     cancelled_delivery = fields.Integer(string='Cancelled Delivery', compute='_compute_cancelled_delivery')
     done_delivery = fields.Integer(string='Done Delivery', compute='_compute_done_delivery')
     
+    # // Makes the phone numbers unique
+    @api.multi
+    @api.constrains('phone', 'mobile', 'mobile1', 'mobile2', 'whatsapp')
+    def check_phone_numbers(self):
+        if self.phone:
+            phone = self.env['res.partner'].search([('phone', '=', self.phone),('id', '!=', self.id)])
+            if phone:
+                raise UserError(_('Phone number must be unique!'))
+        if self.mobile:
+            mobile = self.env['res.partner'].search([('mobile', '=', self.mobile),('id', '!=', self.id)])
+            if mobile:
+                raise UserError(_('Mobile number must be unique!'))
+        if self.mobile1:
+            mobile1 = self.env['res.partner'].search([('mobile1', '=', self.mobile1),('id', '!=', self.id)])
+            if mobile1:
+                raise UserError(_('Mobile 1 number must be unique!'))
+        if self.mobile2:
+            mobile2 = self.env['res.partner'].search([('mobile2', '=', self.mobile2),('id', '!=', self.id)])
+            if mobile2:
+                raise UserError(_('Mobile 2 number must be unique!'))
+        if self.whatsapp:
+            whatsapp = self.env['res.partner'].search([('whatsapp', '=', self.whatsapp),('id', '!=', self.id)])
+            if whatsapp:
+                raise UserError(_('Whatsapp number must be unique!'))
+
 #     def _compute_open_delivery(self):
 #         delivery_data = self.env['stock.picking'].read_group(domain=[('partner_id','child_of', self.ids)],
 #                                                              fields=['partner_id'], groupby=['partner_id'])
@@ -34,19 +59,19 @@ class ResPartner(models.Model):
     @api.one
     def _compute_open_delivery(self):
         for partner in self:
-            open_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','Available')])
+            open_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','assigned')])
             self.open_delivery = len(open_delivery_count)
 
     @api.one
     def _compute_cancelled_delivery(self):
         for partner in self:
-            cancelled_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','Cancel')])
+            cancelled_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','cancel')])
             self.cancelled_delivery = len(cancelled_delivery_count)
 
     @api.one
     def _compute_done_delivery(self):
         for partner in self:
-            done_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','Done')])
+            done_delivery_count = self.env['stock.picking'].search([('partner_id','=',partner.id),('state','=','done')])
             self.done_delivery = len(done_delivery_count)
             
     @api.onchange('zip_id')
@@ -54,7 +79,6 @@ class ResPartner(models.Model):
         if self.zip_id:
             self.zip = self.zip_id.name
             self.city = self.zip_id.city
-            self.district_name = self.district_name
             self.state_id = self.zip_id.state_id
             self.country_id = self.zip_id.country_id
 
@@ -131,7 +155,8 @@ class ResPartner(models.Model):
             name = partner.name or ''
 
             if partner.phone:
-                name = "%s [ - %s]" %(partner.name,partner.phone) or ''
+                 name = "%s" %(partner.name) or ''
+#                 name = "%s [ - %s]" %(partner.name,partner.phone) or ''
             if partner.company_name or partner.parent_id:
                 if not name and partner.type in ['invoice', 'delivery', 'other']:
                     name = dict(self.fields_get(['type'])['type']['selection'])[partner.type]
