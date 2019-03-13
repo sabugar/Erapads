@@ -23,7 +23,7 @@
                         string="Total Cancellation">
                     </button>
                 </xpath> -->
-            
+
                 <!-- Not needed field. Hide them -->
                 <xpath expr="//field[@name='function']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -49,26 +49,30 @@
 
                 <field name="city" position="before">
                     <field name="zip_id"
-                        attrs="{'readonly': [('type', '=', 'contact'), ('parent_id', '!=', False)]}"
-                        options="{'create_name_field': 'city', 'no_open': True, 'no_create': True}"
-                        placeholder="City completion"
-                        class="oe_edit_only" />
+                           attrs="{'readonly': [('type', '=', 'contact'), ('parent_id', '!=', False)]}"
+                           options="{'create_name_field': 'city', 'no_open': True, 'no_create': True}"
+                           placeholder="City completion"
+                           class="oe_edit_only"/>
                 </field>
                 <xpath expr="//field[@name='child_ids']/form//field[@name='city']" position="before">
                     <field name="zip_id"
-                        options="{'create_name_field': 'city', 'no_open': True, 'no_create': True}"
-                        placeholder="City completion"
-                        class="oe_edit_only" />
+                           options="{'create_name_field': 'city', 'no_open': True, 'no_create': True}"
+                           placeholder="City completion"
+                           class="oe_edit_only"/>
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="route"/>
+                    <field name="delivery_agency"/>
                 </xpath>
                 <field name="country_id" position="after">
                     <field name="district_name" placeholder="District Name"/>
                 </field>
-                
+
                 <!-- Set as Phone is required field-->
                 <field name="phone" position="attributes">
                     <attribute name="required">True</attribute>
                 </field>
-                
+
                 <!-- Mobile field added -->
                 <xpath expr="//field[@name='mobile']" position="after">
                     <field name="mobile1" widget="phone"/>
@@ -90,7 +94,7 @@
             </data>
         </field>
     </record>
-    
+
     <!-- India Pincode -->
     <record model="ir.ui.view" id="better_zip_form">
         <field name="name">res.better.zip.form</field>
@@ -98,12 +102,12 @@
         <field name="arch" type="xml">
             <form string="City">
                 <group col="4">
-                <field name="area"/>
-                <field name="city"/>
-                <field name="district_name"/>
-                <field name="state_id"/>
-                <field name="country_id"/>
-                <field name="name" widget="char"/>
+                    <field name="area"/>
+                    <field name="city"/>
+                    <field name="district_name"/>
+                    <field name="state_id"/>
+                    <field name="country_id"/>
+                    <field name="name" widget="char"/>
                 </group>
             </form>
         </field>
@@ -132,12 +136,12 @@
                 <field name="city"/>
                 <field name="district_name"/>
                 <field name="name"/>
-                    <group expand="0" string="Group By">
-                        <filter string="Pincode" domain="[]" context="{'group_by':'name'}"/>
-                        <filter string="Area" domain="[]" context="{'group_by':'area'}"/>
-                        <filter string="City" domain="[]" context="{'group_by':'city'}"/>
-                        <filter string="District" domain="[]" context="{'group_by':'district_name'}"/>
-                    </group>
+                <group expand="0" string="Group By">
+                    <filter string="Pincode" domain="[]" context="{'group_by':'name'}"/>
+                    <filter string="Area" domain="[]" context="{'group_by':'area'}"/>
+                    <filter string="City" domain="[]" context="{'group_by':'city'}"/>
+                    <filter string="District" domain="[]" context="{'group_by':'district_name'}"/>
+                </group>
             </search>
         </field>
     </record>
@@ -151,43 +155,6 @@
         <field name="search_view_id" ref="view_better_zip_filter"/>
     </record>
 
-    <!-- Cancelled Delivery Button Action -->
-    <record id="act_res_partner_2_cancelled_delivery" model="ir.actions.act_window">
-        <field name="name">Delivery Order</field>
-        <field name="res_model">stock.picking</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form,graph</field>
-        <field name="domain">[('state','=','cancel')]</field>
-        <field name="context">{'search_default_partner_id': active_id}</field>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-        <field name="help" type="html">
-          <p class="oe_view_nocontent_create">
-            Create a Quotation, the first step of a new sale.
-          </p><p>
-            Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the Invoice and collect the Payment.
-          </p><p>
-            Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales Order list.
-          </p>
-        </field>
-    </record>
-
-    <record id="res_partner_view_cancelled_delivery_buttons" model="ir.ui.view">
-        <field name="name">res.partner.view.cancelled.delivery.buttons</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="priority" eval="20"/>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-        <field name="arch" type="xml">
-            <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_cancelled_delivery)d" 
-                    attrs="{'invisible': [('customer', '=', False)]}"
-                    icon="fa-trash-o">
-                    <field string="Cancel Delivery" name="cancelled_delivery" widget="statinfo"/>
-                </button>     
-            </div>
-        </field>
-    </record>
-
     <!-- Open Delivery Button Action -->
     <record id="act_res_partner_2_open_delivery" model="ir.actions.act_window">
         <field name="name">Delivery Order</field>
@@ -198,33 +165,77 @@
         <field name="context">{'search_default_partner_id': active_id}</field>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
         <field name="help" type="html">
-          <p class="oe_view_nocontent_create">
-            Create a Quotation, the first step of a new sale.
-          </p><p>
-            Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the Invoice and collect the Payment.
-          </p><p>
-            Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales Order list.
-          </p>
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
         </field>
     </record>
 
     <record id="res_partner_view_open_delivery_buttons" model="ir.ui.view">
         <field name="name">res.partner.view.open.delivery.buttons</field>
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="priority" eval="20"/>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_open_delivery)d" 
-                    attrs="{'invisible': [('customer', '=', False)]}"
-                    icon="fa-truck">
+                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_open_delivery)d"
+                        attrs="{'invisible': [('customer', '=', False)]}"
+                        icon="fa-truck">
                     <field string="Open Delivery" name="open_delivery" widget="statinfo"/>
-                </button>     
+                </button>
             </div>
         </field>
     </record>
 
+    <!-- Cancelled Delivery Button Action -->
+    <record id="act_res_partner_2_cancelled_delivery" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="domain">[('state','=','cancel')]</field>
+        <field name="context">{'search_default_partner_id': active_id}</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
+        </field>
+    </record>
+
+    <record id="res_partner_view_cancelled_delivery_buttons" model="ir.ui.view">
+        <field name="name">res.partner.view.cancelled.delivery.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="20"/>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_cancelled_delivery)d"
+                        attrs="{'invisible': [('customer', '=', False)]}"
+                        icon="fa-share-square-o">
+                    <field string="Cancel Delivery" name="cancelled_delivery" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
 
     <!-- Done Delivery Button Action -->
     <record id="act_res_partner_2_done_delivery" model="ir.actions.act_window">
@@ -236,33 +247,20 @@
         <field name="context">{'search_default_partner_id': active_id}</field>
         <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
         <field name="help" type="html">
-          <p class="oe_view_nocontent_create">
-            Create a Quotation, the first step of a new sale.
-          </p><p>
-            Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the Invoice and collect the Payment.
-          </p><p>
-            Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales Order list.
-          </p>
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
         </field>
     </record>
 
-    <record id="res_partner_view_done_delivery_buttons" model="ir.ui.view">
-        <field name="name">res.partner.view.done.delivery.buttons</field>
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form" />
-        <field name="priority" eval="20"/>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-        <field name="arch" type="xml">
-            <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_done_delivery)d" 
-                    attrs="{'invisible': [('customer', '=', False)]}"
-                    icon="fa-check-square-o">
-                    <field string="Done Delivery" name="done_delivery" widget="statinfo"/>
-                </button>     
-            </div>
-        </field>
-    </record>
-    
     <!-- // Phone number search in customers-->
     <record id="customers_custom_filter_search" model="ir.ui.view">
         <field name="name">res.partner.custom.search</field>
@@ -272,23 +270,39 @@
 
             <xpath expr="//search" position="inside">
                 <field name="phone" string="Phone" domain="[('phone','ilike', self)]"/>
+                <field name="mobile" string="Mobile" domain="[('mobile','ilike', self)]"/>
+                <field name="mobile1" string="Mobile1" domain="[('mobile1','ilike', self)]"/>
+                <field name="mobile2" string="Mobile2" domain="[('mobile2','ilike', self)]"/>
+                <field name="whatsapp" string="Whatsapp" domain="[('whatsapp','ilike', self)]"/>
             </xpath>
 
         </field>
     </record>
 
 
-    <!-- <menuitem
-        name="Cities/Locations Management"
-        id="locations_root_menu"
-        parent="base.menu_custom"
-        /> -->
+    <record id="res_partner_view_done_delivery_buttons" model="ir.ui.view">
+        <field name="name">res.partner.view.done.delivery.buttons</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="20"/>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="action" name="%(sabugar.act_res_partner_2_done_delivery)d"
+                        attrs="{'invisible': [('customer', '=', False)]}"
+                        icon="fa-check-square-o">
+                    <field string="Done Delivery" name="done_delivery" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+
 
     <menuitem
-        name="India Pincode"
-        id="locations_menu"
-        parent="sales_team.menu_localisation"
-        action="action_zip_tree"
-        />
- 
+            name="India Pincode"
+            id="locations_menu"
+            parent="sales_team.menu_localisation"
+            action="action_zip_tree"
+    />
+
 </odoo>
