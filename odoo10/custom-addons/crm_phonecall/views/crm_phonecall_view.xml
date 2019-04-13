@@ -97,6 +97,9 @@
                         <field name="partner_id"/>
                         <field name="tag_ids" widget="many2many_tags"/>
                         <field name="partner_mobile"/>
+                        <field name="partner_mobile1"/>
+                        <field name="partner_mobile2"/>
+                        <field name="partner_whatsapp"/>
                         <field name="priority" widget="priority"/>
                         <field name="opportunity_id" context="{'opportunity_id': opportunity_id}"/>
                     </group>
@@ -105,7 +108,14 @@
                         <field name="source_id"/>
                         <field name="medium_id"/>
                     </group>
+                    <group string="Reason" name="reason">
+                        <field name="reason_id"/>
+                    </group>
                     <field name="description" placeholder="Description..."/>
+                    <notebook>
+                        <tree>
+                        </tree>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

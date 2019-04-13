@@ -6,6 +6,7 @@
 from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from xml.dom.minidom import ReadOnlySequentialNamedNodeMap
 
 
 class CrmPhonecall(models.Model):
@@ -86,6 +87,10 @@ class CrmPhonecall(models.Model):
     )
     partner_phone = fields.Char(string='Phone')
     partner_mobile = fields.Char('Mobile')
+    partner_mobile1 = fields.Char('Mobile-1')
+    partner_mobile2 = fields.Char('Mobile-2')
+    partner_whatsapp = fields.Char('Whatsapp')
+    
     priority = fields.Selection(
         selection=[
             ('0', 'Low'),
@@ -104,12 +109,16 @@ class CrmPhonecall(models.Model):
         comodel_name='crm.lead',
         string='Lead/Opportunity',
     )
+    reason_id = fields.Many2one('call.reason', string='Reason', help='Select the held reason')
 
     @api.onchange('partner_id')
     def on_change_partner_id(self):
         if self.partner_id:
             self.partner_phone = self.partner_id.phone
             self.partner_mobile = self.partner_id.mobile
+            self.partner_mobile1 = self.partner_id.mobile1
+            self.partner_mobile2 = self.partner_id.mobile2
+            self.partner_whatsapp = self.partner_id.whatsapp
 
     @api.multi
     def write(self, values):
@@ -284,3 +293,9 @@ class CrmPhonecall(models.Model):
             opportunity_dict = call.convert_opportunity()
             return opportunity_dict[call.id].redirect_opportunity_view()
         return opportunity_dict
+
+class callreason(models.Model):
+    _name = 'call.reason'
+    _description = 'Reason'
+    
+    name = fields.Char(string='Reason', required=True)
