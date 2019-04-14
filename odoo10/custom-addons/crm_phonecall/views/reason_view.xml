@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <menuitem name="Reason" id="reason" parent="utm.menu_link_tracker_root" sequence="99" groups="base.group_no_one"/>
+    <!-- reason_id -->
+    <record model="ir.ui.view" id="crm_phonecall_reason_tree">
+        <field name="name">CRM Phonecall Reason Tree</field>
+        <field name="model">call.reason</field>
+        <field name="arch" type="xml">
+            <tree string="Reason">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="crm_phonecall_reason_form">
+        <field name="name">CRM Phonecall Reason Form</field>
+        <field name="model">call.reason</field>
+        <field name="arch" type="xml">
+            <form string="Campaign">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="reason_id_act" model="ir.actions.act_window">
+        <field name="name">Phonecalls Reason</field>
+        <field name="res_model">call.reason</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="crm_phonecall_reason_tree"/>
+    </record>
+
+    <menuitem action="reason_id_act" id="menu_reason_id_act" sequence="4"
+        groups="base.group_no_one" parent="reason"/>
+</odoo>
