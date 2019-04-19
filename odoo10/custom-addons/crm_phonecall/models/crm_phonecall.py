@@ -43,6 +43,7 @@ class CrmPhonecall(models.Model):
         comodel_name='res.partner',
         string='Contact',
     )
+    
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',
@@ -90,6 +91,10 @@ class CrmPhonecall(models.Model):
     partner_mobile1 = fields.Char('Mobile-1')
     partner_mobile2 = fields.Char('Mobile-2')
     partner_whatsapp = fields.Char('Whatsapp')
+    open_delivery = fields.Integer(string='Open Delivery', compute='_compute_open_delivery')
+    cancelled_delivery = fields.Integer(string='Cancelled Delivery', compute='_compute_cancelled_delivery')
+    done_delivery = fields.Integer(string='Done Delivery', compute='_compute_done_delivery')
+
     
     priority = fields.Selection(
         selection=[
@@ -110,6 +115,28 @@ class CrmPhonecall(models.Model):
         string='Lead/Opportunity',
     )
     reason_id = fields.Many2one('call.reason', string='Reason', help='Select the held reason')
+    logged_call_ids = fields.One2many('logged.calls', 'logged_id', string="History Logged calls")
+
+    @api.one
+    def _compute_open_delivery(self):
+        for partner in self:
+            open_delivery_count = self.env['stock.picking'].search(
+                [('partner_id', '=', partner.id), ('state', '=', 'assigned')])
+            self.open_delivery = len(open_delivery_count)
+
+    @api.one
+    def _compute_cancelled_delivery(self):
+        for partner in self:
+            cancelled_delivery_count = self.env['stock.picking'].search(
+                [('partner_id', '=', partner.id), ('state', '=', 'cancel')])
+            self.cancelled_delivery = len(cancelled_delivery_count)
+
+    @api.one
+    def _compute_done_delivery(self):
+        for partner in self:
+            done_delivery_count = self.env['stock.picking'].search(
+                [('partner_id', '=', partner.id), ('state', '=', 'done')])
+            self.done_delivery = len(done_delivery_count)
 
     @api.onchange('partner_id')
     def on_change_partner_id(self):
@@ -119,6 +146,8 @@ class CrmPhonecall(models.Model):
             self.partner_mobile1 = self.partner_id.mobile1
             self.partner_mobile2 = self.partner_id.mobile2
             self.partner_whatsapp = self.partner_id.whatsapp
+            self.partner_id = self.partner_id.id
+        
 
     @api.multi
     def write(self, values):
@@ -299,3 +328,60 @@ class callreason(models.Model):
     _description = 'Reason'
     
     name = fields.Char(string='Reason', required=True)
+    
+class Loggedcalls(models.Model):
+    _name = "logged.calls"
+
+    logged_id = fields.Many2one('crm.phonecall', string="Logged")
+    create_date = fields.Datetime(
+        string='Creation Date',
+        readonly=True,
+    )
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        string='Responsible',
+         default=lambda self: self.env.user,
+    )
+    partner_id = fields.Many2one(
+        comodel_name='res.partner',
+        string='Contact',
+    )
+    state = fields.Selection(
+        [('open', 'Confirmed'),
+         ('cancel', 'Cancelled'),
+         ('pending', 'Pending'),
+         ('done', 'Held')
+         ],
+        string='Status',
+        readonly=True,
+        track_visibility='onchange',
+        default='open',
+        help='The status is set to Confirmed, when a case is created.\n'
+             'When the call is over, the status is set to Held.\n'
+             'If the callis not applicable anymore, the status can be set '
+             'to Cancelled.')
+    name = fields.Char(
+        string='Call Summary',
+        required=True,
+    )
+    tag_ids = fields.Many2many(
+        comodel_name='crm.lead.tag',
+        relation='crm_phonecall_tag_rel',
+        column1='phone_id',
+        column2='tag_id',
+        string='Tags',
+    )
+    partner_phone = fields.Char(string='Phone')
+    partner_mobile = fields.Char(string='Mobile')
+    partner_mobile1 = fields.Char(string='Mobile-1')
+    partner_mobile2 = fields.Char(string='Mobile-2')
+    partner_whatsapp = fields.Char(string='Whatsapp')
+    
+    date = fields.Datetime(default=fields.Datetime.now)
+    opportunity_id = fields.Many2one(
+        comodel_name='crm.lead',
+        string='Lead/Opportunity',
+    )
+    campaign_id = fields.Many2one('utm.campaign', string='Campaign', readonly=True)
+    source_id = fields.Many2one('utm.source', string='Source', readonly=True)
+    medium_id = fields.Many2one('utm.medium', string='Medium', readonly=True)

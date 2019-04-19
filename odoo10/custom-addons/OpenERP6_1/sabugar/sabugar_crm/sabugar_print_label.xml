@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report id="sabugar_sales_order_report" model="sale.order" name="res.partner.address12" string="Labels" xml="sabugar_crm/report/partner_address.xml" xsl="sabugar_crm/report/partner_address.xsl"/>
+        <report id="report_menifest_label" model="agency.menifest.order" name="agency.menifest.label" string="Menifest Labels" xml="sabugar_crm/report/menifest_label.xml" xsl="sabugar_crm/report/menifest_label.xsl"/>
+        <report id="report_runsheet_label" model="order.runsheet" name="order.runsheet.label" string="Runsheet Labels" xml="sabugar_crm/report/runsheet_label.xml" xsl="sabugar_crm/report/runsheet_label.xsl"/>
+        <!--
+        <report string="Business Cards" model="res.partner" name="res.partner.businesscard" xml="base/res/report/business_card.xml" xsl="base/res/report/business_card.xsl"/>
+        -->
+    </data>
+</openerp>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <report id="delivery_res_partner_address_report" model="stock.picking" name="res.partner.address1" string="Labels" xml="sabugar_sale_stock/report/partner_address.xml" xsl="sabugar_sale_stock/report/partner_address.xsl"/>
+
+    </data>
+</openerp>

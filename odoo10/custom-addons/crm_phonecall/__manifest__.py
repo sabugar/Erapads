@@ -14,6 +14,7 @@
     "depends": [
         'crm',
         'calendar',
+        'stock',
     ],
     "data": [
         'security/crm_security.xml',

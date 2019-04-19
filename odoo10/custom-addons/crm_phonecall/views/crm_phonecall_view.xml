@@ -51,6 +51,78 @@
         </field>
     </record>
 
+    <!-- Open Delivery Button Action -->
+    <record id="act_phone_call_open_delivery" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="domain">[('state','not in',['done','cancel'])]</field>
+        <field name="context">{'search_default_partner_id': active_id}</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
+        </field>
+    </record>
+
+    <!-- Cancelled Delivery Button Action -->
+    <record id="act_phone_call_cancelled_delivery" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="domain">[('state','=','cancel')]</field>
+        <field name="context">{'search_default_partner_id': active_id}</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
+        </field>
+    </record>
+
+    <!-- Done Delivery Button Action -->
+    <record id="act_phone_call_done_delivery" model="ir.actions.act_window">
+        <field name="name">Delivery Order</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="domain">[('state','=','done')]</field>
+        <field name="context">{'search_default_partner_id': active_id}</field>
+        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create a Quotation, the first step of a new sale.
+            </p>
+            <p>
+                Your next actions should flow efficiently: confirm the Quotation to a Sale Order, then create the
+                Invoice and collect the Payment.
+            </p>
+            <p>
+                Note that once a Quotation becomes a Sale Order, it will be moved from the Quotations list to the Sales
+                Order list.
+            </p>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="crm_case_phone_form_view">
         <field name="name">CRM - Phone Call Form</field>
         <field name="model">crm.phonecall</field>
@@ -72,6 +144,18 @@
                         </button>
                         <button class="oe_stat_button" name="action_make_meeting" type="object" icon="fa-calendar fa-fw">
                             <span>Schedule<br/>A Meeting</span>
+                        </button>
+                        <button class="oe_stat_button" type="action" name="%(act_phone_call_open_delivery)d"
+                                icon="fa-truck">
+                            <field string="Open Delivery" name="open_delivery" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action" name="%(act_phone_call_cancelled_delivery)d"
+                                icon="fa-share-square-o">
+                            <field string="Cancel Delivery" name="cancelled_delivery" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="action" name="%(act_phone_call_done_delivery)d"
+                                icon="fa-check-square-o">
+                            <field string="Done Delivery" name="done_delivery" widget="statinfo"/>
                         </button>
                     </div>
                     <div class="oe_title">
@@ -112,9 +196,29 @@
                         <field name="reason_id"/>
                     </group>
                     <field name="description" placeholder="Description..."/>
-                    <notebook>
-                        <tree>
-                        </tree>
+                    <notebook colspan="4">
+                        <page string="History">
+                            <field name="logged_call_ids" attrs="{'invisible' :[('logged_call_ids', '=', False)]}">
+                                <tree string="Logged Calls" create="false">
+                                    <field name="date" />
+                                    <field name="name" />
+                                    <field name="logged_id" invisible="1"/>
+                                    <field name="partner_id" />
+                                    <field name="partner_phone" invisible="1" />
+                                    <field name="partner_mobile" invisible="1" />
+                                    <field name="user_id"
+                                        context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'sales_team.group_sale_salesman']}" />
+                                    <field name="tag_ids" widget="many2many_tags"
+                                        invisible="1" />
+                                    <field name="state" invisible="1" />
+                                    <field name="create_date" invisible="1" />
+                                    <field name="opportunity_id" invisible="1" />
+                                    <field name="campaign_id" />
+                                    <field name="source_id" />
+                                    <field name="medium_id" />
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

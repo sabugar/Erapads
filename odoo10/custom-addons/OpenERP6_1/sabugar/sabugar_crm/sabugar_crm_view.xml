@@ -1,0 +1,2412 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+    
+    <!-- Runsheet Type -->
+    
+    <record id="view_runsheet_type_form" model="ir.ui.view">
+            <field name="name">rusheet.type.form</field>
+            <field name="model">runsheet.type</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Runsheet Type">
+                    <field name="name"/>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_runsheet_type_tree" model="ir.ui.view">
+            <field name="name">runsheet.type.tree</field>
+            <field name="model">runsheet.type</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Runsheet Types">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_view_runsheet_type" model="ir.actions.act_window">
+            <field name="name">Runsheet Types</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">runsheet.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_runsheet_type_tree"/>
+        </record>
+    
+        <menuitem id="menu_runsheet_types" action="action_view_runsheet_type" name="Runsheet Types" parent="stock.menu_stock_configuration" sequence="20"/>
+    
+    
+                <!-- Delivery Orders Update -->
+        
+        <record id="view_delivery_order_updates_search" model="ir.ui.view">
+            <field name="name">view.deivery.status.search</field>
+            <field name="model">stock.picking.status</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Agency Delivery Status">
+                 <group>
+                    <separator orientation="vertical"/>
+                    <field name="date"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="shop_id"/>
+                    <field name="delivery_id"/>
+                    <field name="picking_id"/>
+                    <field name="sale_id"/>
+                </group>
+                <newline/>
+                  <group expand="0" string="Group By..." groups="base.group_extended">
+                     <separator orientation="vertical"/>
+                    <filter string="Agency Delivery Orders" icon="terp-go-month" domain="[]" context="{'group_by':'picking_id'}"/>
+                    <filter string="Sales Orders" icon="terp-go-month" domain="[]" context="{'group_by':'sale_id'}"/>
+                </group>
+              </search>
+            </field>
+        </record>
+
+        <record id="view_delivery_order_updates_form" model="ir.ui.view">
+            <field name="name">delivery.status.update.form</field>
+            <field name="model">stock.picking.status</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Agency Delivery Status">
+                    <group>
+                        <field name="date"/>
+                        <field name="sale_id"/>
+                        <field name="picking_id"/>
+                        <field name="delivery_id"/>
+                    </group>
+                    <group>
+                        <field name="shop_id"/>
+                        <field name="delivery_category"/>
+                        <field name="delivery_status"/>
+                        <field name="problem_code"/>
+                        <field name="comment"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_delivery_order_updates_tree" model="ir.ui.view">
+            <field name="name">delivery.status.update.tree</field>
+            <field name="model">stock.picking.status</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Agency Delivery Status">
+                    <field name="date"/>
+                    <field name="sale_id"/>
+                    <field name="picking_id"/>
+                    <field name="shop_id"/>
+                    <field name="delivery_id"/>
+                    <field name="delivery_category"/>
+                    <field name="delivery_status"/>
+                    <field name="problem_code"/>
+                    <field name="comment"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_view_delivery_order_updates" model="ir.actions.act_window">
+            <field name="name">Agency Delivery Status</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking.status</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_delivery_order_updates_tree"/>
+            <field name="search_view_id" ref="view_delivery_order_updates_search"/>
+        </record>
+        
+        
+        
+        <!-- Menifest Detail -->
+        
+        <record id="view_menifest_filter" model="ir.ui.view">
+            <field name="name">view.menifest.search</field>
+            <field name="model">agency.menifest.order</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Menifest">
+                 <group>
+                    <separator orientation="vertical"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="agency_id"/>
+                    <field name="sale_ids" string="Sales Orders" domain="[('sale_ids', 'in', self)]"/>
+                    <field name="picking_ids" string="Delivery Orders" domain="[('picking_ids', 'in', self)]"/>
+                </group>
+                <newline/>
+                  <group expand="0" string="Group By..." groups="base.group_extended">
+                    <filter string="Agency" icon="terp-partner" domain="[]" context="{'group_by':'agency_id'}"/>
+                </group>
+              </search>
+            </field>
+        </record>
+
+        <record id="view_menifest_order_detail_form" model="ir.ui.view">
+            <field name="name">view.menifest.detail.form</field>
+            <field name="model">agency.menifest.order</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Menifest Detail">
+                    <group>
+	                    <field name="name"/>
+	                    <field name="agency_id"/>
+	                    <field name="date"/>
+                    </group>
+                    
+                    <newline/>
+                    <notebook>
+                        <page string="Delivery Orders">
+	                        <field name="picking_ids" nolabel="1"/>
+                        </page>
+                        <page string="Sales Order">
+	                       <field name="sale_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_menifest_order_detail_tree" model="ir.ui.view">
+            <field name="name">view.menifest.detail.tree</field>
+            <field name="model">agency.menifest.order</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Menifest Detail">
+                    <field name="name"/>
+                    <field name="agency_id"/>
+                    <field name="date"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_menifest_order_details" model="ir.actions.act_window">
+            <field name="name">Menifest Detail</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">agency.menifest.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_menifest_order_detail_tree"/>
+            <field name="search_view_id" ref="view_menifest_filter"/>
+        </record>
+    
+    
+        <!-- Runsheet Detail -->
+        
+        <record id="view_runsheet_filter" model="ir.ui.view">
+            <field name="name">view.runsheet.search</field>
+            <field name="model">order.runsheet</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Runsheets">
+                 <group>
+                    <separator orientation="vertical"/>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="delivery_id"/>
+                    <field name="type_id"/>
+                    <field name="user_id"/>
+                    <field name="picking_ids" domain="[('picking_ids', 'in', self)]"/>
+                    <field name="sale_ids" domain="[('sale_ids', 'in', self)]"/>
+                </group>
+                <newline/>
+                  <group expand="0" string="Group By..." groups="base.group_extended">
+                    <filter string="Delivery Responsible" icon="terp-partner" domain="[]" context="{'group_by':'delivery_id'}"/>
+                </group>
+              </search>
+            </field>
+        </record>
+
+        <record id="view_runsheet_order_detail_form" model="ir.ui.view">
+            <field name="name">view.runsheet.detail.form</field>
+            <field name="model">order.runsheet</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Runsheet Detail">
+                    <group>
+	                    <field name="name"/>
+	                    <field name="type_id"/>
+	                    <field name="delivery_id"/>
+	                    <field name="date"/>
+	                    <field name="user_id"/>
+                    </group>
+                    <newline/>
+                    <notebook>
+                        <page string="Delivery Orders">
+	                        <field name="picking_ids" nolabel="1"/>
+                        </page>
+                        <page string="Sales Order">
+	                       <field name="sale_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_runsheet_order_detail_tree" model="ir.ui.view">
+            <field name="name">view.runsheet.detail.tree</field>
+            <field name="model">order.runsheet</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Runsheet Detail">
+                    <field name="name"/>
+                    <field name="delivery_id"/>
+                    <field name="type_id"/>
+                    <field name="date"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_runsheet_order_detail" model="ir.actions.act_window">
+            <field name="name">Runsheet Detail</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">order.runsheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_runsheet_order_detail_tree"/>
+            <field name="search_view_id" ref="view_runsheet_filter"/>
+        </record>
+    
+        
+        <!--
+            Sequences for pickings
+        -->
+        <record id="seq_runsheet_order_type" model="ir.sequence.type">
+            <field name="name">Runsheet</field>
+            <field name="code">order.runsheet</field>
+        </record>
+        
+
+        <record id="seq_runsheet_order" model="ir.sequence">
+            <field name="name">Runsheet</field>
+            <field name="code">order.runsheet</field>
+            <field name="prefix">RSH/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_menifest_order_type" model="ir.sequence.type">
+            <field name="name">Menifest</field>
+            <field name="code">agency.menifest.order</field>
+        </record>
+        
+
+        <record id="seq_menifest_order" model="ir.sequence">
+            <field name="name">Menifest</field>
+            <field name="code">agency.menifest.order</field>
+            <field name="prefix">MNF/%(y)s/%(month)s/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="stock.action_picking_tree6" model="ir.actions.act_window">
+            <field name="domain">[('type','=','internal'), ('sale_id','=',False)]</field>
+        </record>
+        
+        <record id="spcl_out_picking_search" model="ir.ui.view">
+            <field name="name">stock.picking.spcl.out.search</field>
+            <field name="model">stock.picking</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="stock.view_picking_out_search"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="shop_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </field>
+            </field>
+        </record>
+        
+
+
+        <record id="view_picking_out_spcl_tree" model="ir.ui.view">
+            <field name="name">stock.picking.out.tree.spcl</field>
+            <field name="model">stock.picking</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="SPCL Delivery Orders">
+                    <field name="origin"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="menifest_id" />
+                    <field name="area_id" />
+                    <field name="delivery_id"/>
+                    <field name="date"/>
+                    <field name="shop_id"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="min_date"/>
+                    <field name="state"/>
+                    <field name="salesman_name" invisible="1"/>
+                    <field name="city_id" invisible="1"/>
+                    <field name="call_center_id" invisible="1"/>
+                    <field name="landmark" invisible="1"/>
+                    <field name="x_given_date" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+    
+        
+        
+        <menuitem id="menu_stock_validate_orders" name="Validate Orders" parent="stock.menu_stock_root" sequence="2"/>
+        <menuitem id="menu_all_menifest" name="All Runsheets" parent="stock.menu_stock_root" sequence="2"/>
+        
+        <menuitem id="menu_stock_validate_delivery" action="action_scan_orders" name="Scan/Validate Orders" parent="menu_stock_validate_orders" sequence="1"/>
+        <menuitem id="menu_stock_run_runsheet" action="action_runsheet_order_wizard" name="Create Runsheet" parent="menu_stock_validate_orders" sequence="2"/>
+        <menuitem id="menu_stock_menifest_orders" action="action_create_menifest_wizard" name="Create Menifest" parent="menu_stock_validate_orders" sequence="3"/>
+        <menuitem id="menu_stock_update_delivery_status" action="action_delivery_order_update_wizard" name="Update Agency Delivery" parent="menu_stock_validate_orders" sequence="3"/>
+        
+        <menuitem id="menu_order_all_menifest" name="Menifest Details" action="action_menifest_order_details" parent="menu_all_menifest" sequence="1"/>
+        <menuitem id="menu_stock_all_menifest" name="Runsheet Details" action="action_runsheet_order_detail" parent="menu_all_menifest" sequence="2"/>
+        <menuitem id="menu_stock_delivery_update_status" name="Agency Delivery Updates" action="action_view_delivery_order_updates" parent="menu_all_menifest"/>
+        
+        <record id="base.group_sale_multi_order_approve" model="res.groups">
+            <field name="name">Multiple Sales Order Approve</field>
+            <field name="category_id" ref="base.module_category_sales_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_sale_salesman_all_leads'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+        
+        <record id="base.group_force_creditlimit" model="res.groups">
+            <field name="name">Force Overlimit Credit limit</field>
+            <field name="category_id" ref="base.module_category_sales_management"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_sale_salesman_all_leads'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="sabugar_view_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="type">form</field>
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Sales Order">
+                    <group col="6" colspan="4">
+                            <field name="sequence_id"/>
+                            <field name="name" readonly="1"/>
+                            <field name="date_order"/>
+                            <field name="partner_id" options='{"quick_create": false}' on_change= "onchange_partner_id(partner_id)"  domain="[('customer','=',True)]" context="{'search_default_customer':1}" required="1" />
+                            <field name="opportunity_type" widget='selection' select='1'/>
+                            <field name="lead_source" widget='selection' select='1'/>
+                            <field name="street" colspan="4"/>
+                            <field name="landmark"/>
+                            <field name="area_id"/>
+                            <field name="city_id"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="salesman_name"/>
+                            <field name="call_center_id"/>
+                            <field name="group_id" widget='selection'/>
+                            <field name="shop_id" widget='selection' on_change="onchange_shop_id(shop_id)"/>
+                            <field name="delivery_id"/>
+                            <field name="call_date" colspan="2"/>
+                            <button name="schedule_call" states="draft" string="Schedule Phonecall" type="object" icon="gtk-execute" colspan="2"/>
+                            <newline/>
+                            <field domain="[('type','=','sale')]" name="pricelist_id" on_change="onchange_pricelist_id(pricelist_id,order_line)"/>
+                            <field name="menifest_id"/>
+                            
+                    </group>
+                    <notebook colspan="5">
+                        <page string="Sales Order">
+                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_order_id" on_change="onchange_partner_order_id(partner_order_id, partner_invoice_id, partner_shipping_id)" options='{"quick_create": false}' />
+                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_invoice_id" groups="base.group_extended" options='{"quick_create": false}' />
+                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_shipping_id" groups="base.group_extended" options='{"quick_create": false}' />
+                            <field domain="[('type','=','sale')]" invisible="1" name="pricelist_id" groups="base.group_extended" on_change="onchange_pricelist_id(pricelist_id,order_line)" />
+                            <field colspan="4" name="order_line" nolabel="1" widget="one2many_list">
+                                <form string="Sales Order Lines">
+                                    <notebook>
+                                        <page string="Order Line">
+                                        <group colspan="4" col="5">
+                                            <field colspan="3"
+                                                context="{'sale_id':parent.id, 'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+                                                name="product_id"
+                                                on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, True, parent.date_order, product_packaging, parent.fiscal_position, False, context)"/>
+                                            <field name="name"/>
+
+                                            <field
+                                                context="{'sale_id':parent.id, 'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+                                                name="product_uom_qty"
+                                                on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, product_packaging, parent.fiscal_position, True, context)"/>
+                                            <field name="product_uom"
+                                                on_change="product_uom_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, context)"
+                                                nolabel="1"/>
+                                            <field name="price_unit"/>
+
+                                            <field groups="product.group_uos" name="product_uos_qty"/>
+                                            <field groups="product.group_uos" name="product_uos" nolabel="1"/>
+                                            <newline/>
+                                            <field name="product_packaging"
+                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}" on_change="product_packaging_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, parent.partner_id, product_packaging, True, context)"
+                                                domain="[('product_id','=',product_id)]" groups="base.group_extended"
+                                                colspan="3"/>
+                                            <field name="discount"/>
+                                            <separator colspan="5" string="Notes"/>
+                                            <field colspan="5" name="notes" nolabel="1"/>
+                                            <separator colspan="5" string="Taxes"/>
+                                            <field colspan="5" name="tax_id" nolabel="1" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+                                            <group colspan="5" col="5" groups="base.group_extended">
+                                                <separator colspan="5" string="States"/>
+                                                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" statusbar_colors='{"exception":"red","cancel":"red"}'/>
+                                                <field name="invoiced"/>
+                                                <group attrs="{'invisible':[('invoiced','=',True)]}">
+                                                    <button colspan="1" name="%(sale.action_view_sale_order_line_make_invoice)d" states="confirmed" string="Make Invoices" type="action" icon="terp-document-new"/>
+                                                </group>
+                                            </group>
+                                        </group>
+                                        </page>
+                                        <page groups="base.group_extended" string="Extra Info">
+                                            <field name="type"/>
+                                            <field name="delay"/>
+                                            <field name="th_weight"/>
+                                            <field name="address_allotment_id"/>
+                                            <separator colspan="4" string="Properties"/>
+                                            <field name="property_ids" colspan="4" nolabel="1"/>
+                                        </page>
+                                        <page string="History" groups="base.group_extended">
+                                            <separator colspan="4" string="Invoice Lines"/>
+                                            <field colspan="4" name="invoice_lines" nolabel="1"/>
+                                            <separator colspan="4" string="Stock Moves"/>
+                                            <field colspan="4" name="move_ids" nolabel="1" widget="many2many"/>
+                                        </page>
+                                    </notebook>
+                                </form>
+                                <tree string="Sales Order Lines">
+                                    <field colspan="4" name="name"/>
+                                    <field name="product_uom_qty" string="Qty(UoM)"/>
+                                    <field name="product_uom" string="UoM"/>
+                                    <field groups="product.group_uos" name="product_uos_qty" string="Qty(UoS)"/>
+                                    <field groups="product.group_uos" name="product_uos" string="UoS"/>
+                                    <field name="discount"/>
+                                    <field name="price_unit"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                            </field>
+                            <newline/>
+                            <field name="sales_line_ids" colspan="4">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="date_order"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom" string="UoM"/>
+                                    <field name="discount"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                            </field>
+                            
+                            <group col="13" colspan="10">
+                                <field name="amount_untaxed" sum="Untaxed amount"/>
+                                <field name="amount_tax"/>
+                                <field name="amount_total"/>
+                                <button name="button_dummy" states="draft" string="Compute" type="object" icon="gtk-execute"/>
+                                <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Advance Invoice" type="action" icon="gtk-execute" states="draft,manual" groups="base.group_extended"/>
+                            </group>
+                            <group col="17" colspan="4">
+                                <field name="state" widget="statusbar" statusbar_visible="draft,progress,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
+                                <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" icon="gtk-go-forward"/>
+                                <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" icon="gtk-apply"/>
+                                <button name="ship_recreate" states="shipping_except" string="Recreate Packing" icon="gtk-ok"/>
+                                <button name="ship_corrected" states="shipping_except" string="Ignore Exception" icon="gtk-apply"/>
+                                <button name="action_cancel" states="manual,progress" string="Cancel Order" type="object" icon="gtk-cancel"/>
+                                <button name="%(sale.report_sale_order)d" string="Print Order" type="action" icon="gtk-print" states="waiting_date,manual,progress,done,shipping_except,invoice_except" groups="base.group_sale_manager"/>
+                                <button name="manual_invoice" states="manual" string="Create Final Invoice" icon="gtk-go-forward" type="object"/>
+                                <button name="ship_cancel" states="shipping_except" string="Cancel Order" icon="gtk-cancel"/>
+                                <button name="action_cancel_draft" states="cancel" string="Set to Draft" type="object" icon="gtk-convert"/>
+                                <button name="cancel" states="draft" string="Cancel Order" icon="gtk-cancel"/>
+                                <button name="invoice_cancel" states="invoice_except" string="Cancel Order" icon="gtk-cancel"/>
+                                <button name="%(sale.report_sale_order)d" string="Print Quotation" type="action" icon="gtk-print" states="draft"  groups="base.group_sale_manager"/>
+                                <button name="order_confirm" states="draft" string="Confirm Order" icon="gtk-apply" groups="base.group_sale_manager"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Address Detail">
+                            <separator colspan="4" string="Addresses"/>
+                            <field domain="[('partner_id','=',partner_id)]" name="partner_order_id" on_change="onchange_partner_order_id(partner_order_id, partner_invoice_id, partner_shipping_id)" options='{"quick_create": false}'/>
+                            <field domain="[('partner_id','=',partner_id)]" name="partner_invoice_id" groups="base.group_extended" options='{"quick_create": false}'/>
+                            <field domain="[('partner_id','=',partner_id)]" name="partner_shipping_id" groups="base.group_extended" options='{"quick_create": false}'/>
+                        </page>
+                        <page string="History" groups="base.group_extended">
+                            <separator colspan="4" string="Invoices"/>
+                            <field colspan="4" name="invoice_ids" nolabel="1" context="{'form_view_ref':'account.invoice_form'}"/>
+                            <separator colspan="4" string="Packings"/>
+                            <field colspan="4" name="picking_ids" nolabel="1"/>
+                        </page>
+                        <page string="Other Information">
+                            <group colspan="2" col="2" groups="base.group_extended" name="logistics">
+                                <separator string="Logistic" colspan="2"/>
+                                <field name="incoterm" widget="selection"/>
+                                <field name="picking_policy" required="True"/>
+                                <field name="order_policy" on_change="shipping_policy_change(order_policy)"/>
+                                <field name="invoice_quantity" attrs="{'readonly':[('order_policy','in',('prepaid','picking'))]}"/>
+                            </group>
+                            <group colspan="2" col="2">
+                                <separator string="References" colspan="2"/>
+                                <field name="user_id"/>
+                                <field groups="base.group_extended" name="origin"/>
+                            </group>
+                            <group colspan="2" col="2" groups="base.group_extended">
+                                <separator string="Conditions" colspan="2"/>
+                                <field name="payment_term" widget="selection"/>
+                                <field name="fiscal_position" widget="selection"/>
+                                <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                            </group>
+                            <group colspan="2" col="2" groups="base.group_extended">
+                                <separator string="Dates" colspan="2"/>
+                                <field name="create_date"/>
+                                <field name="date_confirm"/>
+                            </group>
+                            <separator colspan="4" string="Notes"/>
+                            <field colspan="4" name="note" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>        
+        <record id="sabugar_view_sales_order_filter" model="ir.ui.view">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <filter icon="terp-document-new" string="Quotations" domain="[('state','=','draft')]" help="Sales Order that haven't yet been confirmed"/>
+                    <filter icon="terp-check" string="Sales" domain="[('state','in',('manual','progress'))]"/>
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-dolar_ok!" string="To Invoice" domain="[('state','=','manual')]" help="Sales Order ready to be invoiced"/>
+                    <separator orientation="vertical"/>
+                    
+                    <filter icon="terp-go-today" string="Today"
+                        domain="[('date_order','&lt;=', time.strftime('%%Y-%%m-%%d')), ('date_order','&gt;=', time.strftime('%%Y-%%m-%%d'))]"
+                        help="Todays' Order" />
+                    <filter icon="terp-go-today" string="Yesterday"
+                        domain="[('date_order','&lt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')), ('date_order','&gt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]"
+                        help="Yesterday Order" />
+                    <filter icon="terp-go-week" string="Week"
+                        help="Order created during last 7 days"
+                        domain="[('date_order','&lt;=', time.strftime('%%Y-%%m-%%d')),('date_order','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Fortnight"
+                        help="Order created during last 15 days"
+                        domain="[('date_order','&lt;=', time.strftime('%%Y-%%m-%%d')),('date_order','&gt;=',(datetime.date.today()-datetime.timedelta(days=15)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-go-month" string="Week 1"
+                        help="First week of the month"
+                        domain="[('date_order','&gt;=', (datetime.date.today()+relativedelta(day=1)).strftime('%%Y-%%m-%%d')),('date_order','&lt;=',(datetime.date.today()+relativedelta(day=7)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Week 2"
+                        help="Second week of the month"
+                        domain="[('date_order','&gt;=', (datetime.date.today()+relativedelta(day=8)).strftime('%%Y-%%m-%%d')),('date_order','&lt;=',(datetime.date.today()+relativedelta(day=14)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Week 3"
+                        help="Third week of the month"
+                        domain="[('date_order','&gt;=', (datetime.date.today()+relativedelta(day=15)).strftime('%%Y-%%m-%%d')),('date_order','&lt;=',(datetime.date.today()+relativedelta(day=21)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Week 4"
+                        help="Forth week of the month"
+                        domain="[('date_order','&gt;=', (datetime.date.today()+relativedelta(day=22)).strftime('%%Y-%%m-%%d')),('date_order','&lt;=',(datetime.date.today()+relativedelta(day=28)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Week 5"
+                        help="Fifth week of the month"
+                        domain="[('date_order','&gt;=', (datetime.date.today()+relativedelta(day=29)).strftime('%%Y-%%m-%%d')),('date_order','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-go-month" string="Month"
+                            name="month"
+                            domain="[('date_order','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date_order','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"
+                            help="Order created during this month."/>
+                    <filter icon="terp-go-year" string="Year" 
+                            name="year"
+                            domain="[('date_order','&lt;=', time.strftime('%%Y-%%m-%%d')),('date_order','&gt;=',time.strftime('%%Y-01-01'))]"
+                            help="Order created during this year"/>
+                    <newline/>
+                    <field name="sequence_id" widget="selection"/>
+                    <field name="name"
+                        filter_domain="['|', ('name','ilike',self),('client_order_ref','ilike',self)]"/>
+                    <field name="partner_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="date_order" string="Order Date"/>
+                    <field name="product_id"/>
+                    <field name="product_category_id" widget="selection"/>
+                    <newline />
+                    <field name="menifest_id"/>
+                    <field name="shop_id" />
+                    <field name="delivery_id"/>
+                    <field name="section_id" widget="selection" string="Sales Team" groups="base.group_extended">
+                        <filter icon="terp-personal+"
+                                domain="[('section_id.user_id','=',uid)]"
+                                groups="base.group_extended"
+                                help="My Sales Team(s)"/>
+                    </field>
+                    <field name="user_id">
+                        <filter domain="[('user_id','=',uid)]" help="My Sale Orders" icon="terp-personal"/>
+                    </field>
+                    <field name="area_id"/>
+                    <field name="salesman_name"/>
+                    <newline/>
+                    <group expand="0" string="Group By..." groups="base.group_extended">
+                        <filter string="Customer" icon="terp-personal" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Menifest" icon="terp-personal" domain="[]" context="{'group_by':'menifest_id'}"/>
+                        <filter string="Salesman" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Lead Source" help="Lead Source" icon="terp-personal+" domain="[]" context="{'group_by':'lead_source'}"/>
+                        <filter string="Customer Type" help="Customer Type" icon="terp-personal+" domain="[]" context="{'group_by':'opportunity_type'}"/>
+                        <separator orientation="vertical"/> 
+                        <filter string="Caller Name" help="Caller Name" icon="terp-personal" domain="[]" context="{'group_by':'salesman_name'}"/>
+                    
+                        <filter string="Lead Source" help="Lead Source" icon="terp-personal+" domain="[]" context="{'group_by':'lead_source'}"/>
+                        <filter string="Delivery User" help="Delivery User" icon="terp-personal+" domain="[]" context="{'group_by':'delivery_id'}"/>
+                        <newline/>
+                        <separator orientation="vertical"/>
+                        <filter string="Area" help="Area" icon="terp-rating-rated" domain="[]" context="{'group_by':'area_id'}"/>
+                        <filter string="City" help="City" icon="terp-rating-rated" domain="[]" context="{'group_by':'city_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Groups" help="Groups" icon="terp-partner" domain="[]" context="{'group_by':'group_id'}"/>
+                        <filter string="Agency" help="Agency" icon="terp-partner" domain="[]" context="{'group_by':'shop_id'}"/>
+                        <filter string="Call Center" help="Call Center" icon="terp-partner" domain="[]" context="{'group_by':'call_center_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Order Date" icon="terp-go-today" domain="[]" context="{'group_by':'day'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+        
+        <record id="sale.view_order_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="type">tree</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Orders" colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
+                    <field name="name"/>
+                    <field name="date_order"/>
+                    <field name="opportunity_type" invisible="1"/>
+                    <field name="lead_source" invisible="1"/>
+                    <field name="city_id" invisible="1"/>
+                    <field name="call_center_id" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="menifest_id"/>
+                    <field name="area_id" />
+                    <field name="amount_total" sum="Total Tax Included"/>
+                    <field name="salesman_name"/>
+                    <field name="shop_id" />
+                    <field name="delivery_id"/>
+                    <field name="group_id"/>
+                    <field name="state" invisible="1"/>
+                    <field name="user_id"/>
+                    <field name="day" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="sale.action_order_form" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sabugar_view_sales_order_filter"/>
+            <field name="context">{'default_opportunity_type':1,'default_lead_source':1,'search_default_month':1}</field>
+            <field name="help">Sales Orders help you manage quotations and orders from your customers. OpenERP suggests that you start by creating a quotation. Once it is confirmed, the quotation will be converted into a Sales Order. OpenERP can handle several types of products so that a sales order may trigger tasks, delivery orders, manufacturing orders, purchases and so on. Based on the configuration of the sales order, a draft invoice will be generated so that you just have to confirm it when you want to bill your customer.</field>
+        </record>
+        
+        <act_window
+            id="sabugar_schedule_call_sales_order"
+            name="Sales Order"
+            res_model="sale.order"
+            src_model="crm.phonecall"
+            view_mode="form"
+            context="{'default_partner_id' : partner_id}"/>
+            
+        <record id="action_sabugar_sales_tree" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale.view_order_tree"/>
+            <field name="act_window_id" ref="sale.action_order_form"/>
+        </record>
+        <record id="action_sabugar_sales_form" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sabugar_view_order_form"/>
+            <field name="act_window_id" ref="sale.action_order_form"/>
+        </record>
+        <act_window
+            id="sabugar_mass_editing_link_sales_order"
+            name="Mass Editing"
+            res_model="mass.object"
+            src_model="sale.order"
+            view_mode="form,tree"
+        />
+        <record id='sabugar_stock_picking_view' model='ir.ui.view'>
+            <field name="name">sabugar stock picking view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="type">form</field>
+            <field name='arch' type='xml'>  
+                <xpath expr="/form/group/group/field[@name='name']" position='replace'/>
+                <xpath expr="/form/group/group/field[@name='address_id']" position='attributes'>
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="sabugar_view_picking_out_search" model="ir.ui.view">
+            <field name="name">stock.picking.out.search</field>
+            <field name="model">stock.picking</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Picking list">
+                    <group>
+                        <filter icon="terp-check" name="available" string="Ready" domain="[('state','=','assigned')]" help="Assigned Delivery Orders"/>
+                        <filter icon="terp-camera_test" name="confirmed" string="Waiting" domain="[('state','=','confirmed')]" help="Confirmed Delivery Orders"/>
+                        <filter icon="terp-dialog-close" name="done" string="Done" domain="[('state','=','done')]" help="Delivery orders already processed"/>
+                        <separator orientation="vertical"/>
+                        <filter icon="terp-accessories-archiver-minus" string="Back Orders" domain="[('backorder_id', '!=', False)]" help="Is a Back Order" groups="base.group_extended"/>
+                        <separator orientation="vertical"/>
+                        <filter icon="terp-dolar" name="to_invoice" string="To Invoice" domain="[('invoice_state','=','2binvoiced')]" help="Delivery orders to invoice"/>
+                        <separator orientation="vertical"/>
+                        <filter icon="terp-go-today" string="Today"
+                            domain="[('date','&lt;=', time.strftime('%%Y-%%m-%%d 23:59:59')), ('date','&gt;=', time.strftime('%%Y-%%m-%%d 00:00:00'))]"
+                            help="Todays' Order" />
+                        <filter icon="terp-go-week" string="Week"
+                            help="Order created during last 7 days"
+                            domain="[('date','&lt;', time.strftime('%%Y-%%m-%%d')),('date','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"
+                        />
+                        <filter icon="terp-go-month" string="Fortnight"
+                            help="Order created during last 15 days"
+                            domain="[('date','&lt;=', time.strftime('%%Y-%%m-%%d')),('date','&gt;=',(datetime.date.today()-datetime.timedelta(days=15)).strftime('%%Y-%%m-%%d'))]"
+                        />
+                        <filter icon="terp-go-month" string="Month"
+                                name="month"
+                                domain="[('date','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('date','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"
+                                help="Order created during this month."/>
+                        <filter icon="terp-go-year" string="Year" 
+                                name="year"
+                                domain="[('date','&lt;=', time.strftime('%%Y-%%m-%%d')),('date','&gt;=',time.strftime('%%Y-01-01'))]"
+                                help="Order created during this year"/>
+                        <newline />
+                        <separator orientation="vertical" />
+                        <field name="name"/>
+                        <field name="origin"/>
+                        <field name="menifest_id"/>
+                        <field name="partner_id" />
+                        <field name="shop_id" />
+                        <field name="area_id" />
+                        <field name="delivery_id" />
+                        <newline />
+                        <field name="date_from" />
+                        <field name="date_to" />
+                        <field name="date" />
+                        <field name="min_date" />
+                        <field name="salesman_name" />
+                        <field name="call_center_id" />
+                        <field name="group_id" />
+                        <field name="stock_journal_id" groups="base.group_extended" widget="selection" invisible="1"/>
+                        <field name="company_id" widget="selection" groups="base.group_multi_company" invisible="1"/>
+                   </group>
+                    <newline/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Partner" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Menifest" icon="terp-partner" domain="[]" context="{'group_by':'menifest_id'}"/>
+                        <filter string="Caller Name" icon="terp-personal" domain="[]" context="{'group_by':'salesman_name'}"/>
+                        <filter string="Delivery User" help="Delivery User" icon="terp-personal" domain="[]" context="{'group_by':'delivery_id'}"/>
+                        <separator orientation="vertical" />
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Landmark" help="Landmark" icon="terp-personal+" domain="[]" context="{'group_by':'landmark'}"/>
+                        <separator orientation="vertical" />
+                        <filter string="Area" help="Area" icon="terp-rating-rated" domain="[]" context="{'group_by':'area_id'}"/>
+                        <filter string="City" help="City" icon="terp-rating-rated" domain="[]" context="{'group_by':'city_id'}"/>
+                        <separator orientation="vertical" />
+                        <filter string="Agency" help="Agency" icon="terp-rating-rated" domain="[]" context="{'group_by':'shop_id'}"/>
+                        <filter string="Call Center" help="Call Center" icon="terp-rating-rated" domain="[]" context="{'group_by':'call_center_id'}"/>
+                        <filter string="Delivery User" help="Delivery User" icon="terp-rating-rated" domain="[]" context="{'group_by':'delivery_id'}"/>
+                        <separator orientation="vertical" />
+                        <filter string="Order Date" icon="terp-go-month" domain="[]"  context="{'group_by':'date'}"/>
+                        <filter string="Expected Date" icon="terp-go-month" domain="[]"  context="{'group_by':'min_date'}"/>
+                        <filter string="Given Date" help="Given Date" icon="terp-go-today" domain="[]" context="{'group_by':'x_given_date'}"/>
+                        <separator orientation="vertical" />
+                        <filter string="Journal" icon="terp-folder-orange" domain="[]" context="{'group_by':'stock_journal_id'}"  groups="base.group_extended"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_out_spcl_picking_tree" model="ir.actions.act_window">
+            <field name="name">SPCL Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('type','=','internal'), ('sale_id', '!=', False)]</field>
+            <field name="context">{'spcl_internal_delivery': True}</field>
+            <field name="search_view_id" ref="sabugar_view_picking_out_search"/>
+            <!-- <field name="search_view_id" ref="stock.view_picking_out_search"/> -->
+            <field name="help">This Delivery are which SPCL sends to the Agencies. SPCL warehouse to Agency deliveries.</field>
+        </record>
+        
+        <record id="action_picking_out_tree_spcl" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_picking_out_spcl_tree"/>
+            <field name="act_window_id" ref="action_out_spcl_picking_tree"/>
+        </record>
+        <record id="action_picking_out_from_spcl" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock.view_picking_out_form"/>
+            <field name="act_window_id" ref="action_out_spcl_picking_tree"/>
+        </record>
+        
+        <menuitem action="action_out_spcl_picking_tree" id="menu_action_picking_spcl_tree" parent="stock.menu_stock_warehouse_mgmt" sequence="4"/>
+        
+        <!-- Delivery Order Tree View -->
+        <record id="sabugar_view_picking_out_tree" model="ir.ui.view">
+            <field name="name">sabugar.stock.picking.out.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Delivery Orders">
+                    <field name="origin"/>
+                    <field name="name"/>
+                    <field name="partner_id" />
+                    <field name="menifest_id" />
+                    <field name="area_id" />
+                    <field name="delivery_id" />
+                    <field name="date" />
+                    <field name="min_date" />
+                    <field name="landmark" invisible="1"/>
+                    <field name="city_id" invisible="1"/>
+                    <field name="shop_id"/>
+                    <field name="call_center_id" invisible="1" />
+                    <field name="state"/>
+                    <field name="salesman_name" invisible="1"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="x_given_date" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='sabugar_delivery_order_form_view' model='ir.ui.view'>
+            <field name="name">sabugar delivery order form view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_out_form"/>
+            <field name="type">form</field>
+            <field name='arch' type='xml'> 
+                <xpath expr="/form/group/group/field[@name='address_id']" position='after'>
+                    <field name="landmark"/>
+                    <field name="area_id"/>
+                    <field name="city_id"/>
+                    <field name="shop_id"/>
+                </xpath>
+                <xpath expr="//page[@string='Products']" position='after'>
+                    <page string="Delivery Status">
+                        <field name="status_ids" nolabel="1"/>
+                    </page>
+                </xpath>
+                <xpath expr="/form/group/group[2]" position="inside">
+                    <field name="salesman_name" />
+                    <field name="delivery_id" />
+                    <field name="group_id" widget="selection" />
+                    <field name="x_given_date"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Delivery Order Action -->
+
+        <record id="stock.action_picking_tree_out_view1_waiting" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sabugar_view_picking_out_tree"/>
+            <field name="act_window_id" ref="stock.action_picking_tree"/>
+        </record>
+
+        <record id="stock.action_picking_tree" model="ir.actions.act_window">
+            <field name="name">Delivery Orders</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('type','=','out')]</field>
+            <field name="context">{'default_type': 'out', 'contact_display': 'partner_address', 'search_default_confirmed': 1, 'search_default_available': 1}</field>
+            <field name="search_view_id" ref="sabugar_view_picking_out_search"/>
+            <field name="help">This is the list of all delivery orders that have to be prepared, according to your different sales orders and your logistics rules.</field>
+        </record>        
+
+        <!-- Mass Editing Link -->
+        <act_window
+            id="sabugar_mass_editing_link"
+            name="Mass Editing"
+            res_model="mass.object"
+            src_model="stock.picking"
+            view_mode="form,tree"
+    />
+        <!-- Partner Address -->
+        <record id='sabugar_contact_search_view' model='ir.ui.view'>
+            <field name="name">sabugar contact search view</field>
+            <field name="model">res.partner.address</field>
+            <field name="inherit_id" ref="base.view_res_partner_address_filter"/>
+            <field name="type">search</field>
+            <field name='arch' type='xml'> 
+                <xpath expr="/search/group/field[@name='name']" position='after'>
+                    <field name="area_id"/>
+                    <field name="city_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="sabugar_view_partner_address_tree" model="ir.ui.view">
+            <field name="name">sabugar.res.partner.address.tree</field>
+            <field name="model">res.partner.address</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="base.view_partner_address_tree"/>
+            <field name="arch" type="xml">
+                <field name="city" position="replace">
+                    <field name="city" invisible="1"/>
+              		<field name="city_id"/>
+            		<field name="area_id"/>
+           		</field>
+            </field>
+        </record>
+        
+        
+        <record id="sabugar_view_partner_address_form1" model="ir.ui.view">
+            <field name="name">sabugar.res.partner.address.form1</field>
+            <field name="model">res.partner.address</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="base.view_partner_address_form1"/>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="city" position="replace">
+                    <field name="area_id"/>    
+              		<field name="city_id"/>            
+                </field>
+                <field name="phone" position="replace">
+                    <field name="phone" required="True"></field>
+                	<field name="phone2"/>
+                	<field name="mobile2"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Partner View -->
+
+        <record id='sabugar_res_partner_search_view' model='ir.ui.view'>
+            <field name="name">sabugar res partner search view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                <xpath expr="/search/group/filter[@name='supplier']" position='after'>
+                    <separator orientation="vertical"/>
+                    <filter string="Active Customer" name="active" icon="terp-personal+" domain="[('active','=',True)]" help="Active Customer"/>
+                    <filter string="Inactive Customer" name="inactive" icon="terp-personal-" domain="[('active','=',False)]" help="Inactive Customer"/>
+                </xpath>
+                <xpath expr="/search/group/field[@name='address']" position='replace'>
+                    <field name="address" 
+                    filter_domain="['|',('name','ilike',self),('phone','ilike',self)]"> 
+                    </field>
+                </xpath>
+                <xpath expr="/search/group/field[@name='country']" position='replace'>
+                    <field name="area_code"/>
+                    <field name="area_id"/>
+                    <field name="city_id"/>
+                    <newline/>
+                    <field name="state" select="1"/>
+                </xpath>
+                <xpath expr="/search/group/field[@name='user_id']" position='after'>
+                    <field name="last_transaction"/>
+                </xpath>
+                <xpath expr="/search/group/filter[@string='Salesman']" position='after'>
+                    <filter string="Area Code" icon="terp-rating-rated" domain="[]" context="{'group_by' : 'area_code'}" />
+                    <filter string="City" icon="terp-rating-rated" domain="[]" context="{'group_by' : 'city_id'}" />
+                    <filter string="Area" icon="terp-rating-rated" domain="[]" context="{'group_by' : 'area_id'}" />
+                    <filter string="State" icon="terp-rating-rated" domain="[]" context="{'group_by' : 'state'}" />
+                </xpath>
+            </field>
+        </record>
+
+        <!-- res.partner tree view -->
+
+        <record id="sabugar_view_partner_tree" model="ir.ui.view">
+            <field name="name">sabugar.res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Partners">
+                    <field name="area_code"/>
+                    <field name="name"/>
+                    <field name="area_id"/>
+                    <field name="city_id"/>
+                    <field name="phone"/>
+                    <field name="active"/>
+                    <field name="user_id"/>
+                    <field name="country" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="last_transaction" invisible="1"/>
+                    <field name="address" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="base.action_partner_form_view1" model="ir.actions.act_window.view">
+            <field eval="10" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sabugar_view_partner_tree"/>
+            <field name="act_window_id" ref="base.action_partner_form"/>
+        </record>
+
+        <!--  Partner Form -->
+
+        <record id="view_sabugar_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Partners" col='1'>
+                    <group col="8" colspan="4">
+                        <group colspan="5" col="8">
+                            <field name="area_code" select="1" invisible="1"/>
+                            <field name="name" select="1"/>
+                            <field name="ref" groups="base.group_extended" invisible="1"/>
+                        </group>
+                    </group>
+                    <group colspan="4" >
+                    <separator colspan="4" string="Contact Information"/>
+                    <field colspan="4" mode="form,tree" name="address" nolabel="1" select="1" height="260">
+                        <form string="Partner Contacts">
+                            <group colspan="4" col="6">
+                                <field name="name" string="Contact Name"/>
+                            </group>
+                            <newline/>
+                            <group colspan="2" col="4">
+                               <separator string="Postal Address" colspan="4" col="4" />
+                               <field name="type" string="Type" colspan="2"/>
+                               <field name="street" colspan="4"/>
+                               <field name="street2" colspan="4"/>
+                               <field name="area_id"/>
+                               <field name="city_id"/>
+                               <field name="zip"/>
+                               <field name="state_id" domain="[('country_id.code','=','IN')]"/>
+                               
+                            </group>
+                            <group colspan="2" col="4">
+                                <separator string="Communication" colspan="4" col="2" />
+                                <field name="area_code"/>
+                                <field name="phone"/>
+                                <field name="phone2" string="Phone 1"/>
+                                <field name="mobile"/>
+                                <field name="mobile2" string="Mobile 1"/>
+                                <field name="fax" colspan="4"/>
+                                <field name="email" widget="email" colspan="4"/>
+                            </group>
+                        </form>
+                        <tree string="Partner Contacts">
+                            <field name="name"/>
+                            <field name="zip"/>
+                            <field name="city"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </tree>
+                    </field>
+                    </group>
+                    <group col="6" colspan="4">
+                        <field name="ref1" domain="[('customer','=', 1)]"/>
+                        <field name="active" groups="base.group_extended" />
+                        <field name="user_id"/>
+                    </group>
+                    <notebook colspan="4">
+                        <page string="General">
+                            <group col="6" colspan="4">
+                                <field name="section_id" widget="selection"/>
+                                <group colspan="1" col="2">
+                                    <field name="customer" select="1"/>
+                                    <field name="supplier"/>
+                                    <field name="is_agency"/>
+                                </group>
+                            </group>
+                            <group>
+                                <separator colspan="4" string="Categories"/>
+                                <field  colspan="4" name="category_id" nolabel="1"/>
+                            </group>
+                        </page>
+                        <page string="History" groups="base.group_extended">
+                            <field name="opportunity_ids" colspan="4" nolabel="1" domain="[('type','=','lead')]">
+				                <tree string="Leads"  colors="blue:state=='pending';grey:state in ('cancel', 'done')">
+				                    <field name="date_deadline" invisible="1"/>
+				                    <field name="lead_source" />
+				                    <field name="contact_name" />
+				                    <field name="create_date" invisible="1"/>
+				                    <field name="state_id" invisible="1"/>
+				                    <field name="stage_id" invisible="1"/>
+				                    <field name="categ_id" invisible="1"/>
+				                    <field name="referredby" invisible="1"/>
+				                    <field name="channel_id" invisible="1"/>
+				                    <field name="subjects" invisible="1"/>
+				                    <field name="section_id" invisible="1"/>
+				                    <field name="phone"/>
+				                    <field name="mobile"/>
+				                    <field name="city_id"/>
+				                    <field name="priority"/>
+				                    <field name="type_id" />
+				                    <field name="user_id" />
+				                    <field name="state" invisible="1"></field>
+				                </tree>
+				                <form string="Leads Form">
+				                    <group colspan="4" col="6">
+				                        <field name="lead_source" select="1"/>
+				                        <field domain="[('domain', '=', 'contact')]" name="title" widget="selection" />
+				                        <field name="contact_name" select="1"/>
+				                        <field name="name" required="0" string="Subject" invisible="1"/>
+				                        <field name="street" colspan="6"/>
+				                    </group>
+				                    <group col="6" colspan="4">
+				                        <field name="street2"/>
+				                        <field name="area_id" />
+				                        <field name="city_id" select="1"/>
+				                        <field name="zip"/>
+				                        <field name="phone" select="1"/>
+				                        <field name="phone2" string="Phone 1"/>
+				                        <field name="state_id" domain="[('country_id.code','=','IN')]" on_change="on_change_stage(stage_id)"/>
+				                        <field name="mobile" select="1"/>
+				                        <field name="mobile2" string="Mobile 1"/>
+				                        <field name="user_id" select="1"/>
+				                        <group col="6" colspan="3">
+				                            <field name="email_from" widget="email"/>
+				                            <button string="Mail"
+				                                    name="%(mail.action_email_compose_message_wizard)d"
+				                                    icon="terp-mail-message-new" type="action"/>
+				                        </group>
+				                    </group>
+				                    <field name="type" invisible="1"/>
+				                    <notebook colspan="4">
+				                    <page string="Lead">
+				                        <field name="type_id" select="1" widget="selection"/>
+				                        <field name="priority" select="1"/>
+				                        <field name="stage_id" domain="section_id and [('section_ids', '=', section_id)] or []" />
+				                        <field name="categ_id"
+				                            widget="selection"
+				                            domain="[('object_id.model','=','crm.lead')]"/>
+				                        <field name="section_id" widget="selection" />
+				                        <field name="referredby" />
+				                        <separator colspan="4" string="Notes"/>
+				                        <field name="description" nolabel="1" colspan="4"/>
+				                        <separator colspan="4"/>
+				                        <group col="8" colspan="4">
+				                            <field name="state" widget="statusbar" statusbar_visible="draft,open,done" statusbar_colors='{"pending":"blue"}'/>
+				                            <button name="case_cancel" string="Cancel"
+				                                states="draft,open,pending" type="object"
+				                                icon="gtk-cancel" />
+				                            <button name="case_open" string="Open"
+				                                states="draft,pending" type="object"
+				                                icon="gtk-go-forward" />
+				                            <button name="case_mark_lost" string="Close"
+				                                states="open,pending" type="object"
+				                                icon="gtk-close" />
+				                            <button name="case_pending" string="Pending"
+				                                states="open" type="object"
+				                                icon="gtk-media-pause" />
+				                            <button name="case_escalate" string="Escalate"
+				                                states="open,pending" type="object"
+				                                groups="base.group_extended"
+				                                icon="gtk-go-up" />
+				                            <button name="case_reset"
+				                                string="Reset to Draft" states="done,cancel"
+				                                type="object" icon="gtk-convert" />
+				                        </group>
+				                     </page>
+				                     <page string="Communication &amp; History" groups="base.group_extended">
+				                       <group colspan="4">
+				                           <field colspan="4" name="email_cc" widget="char" size="512"/>
+				                       </group>
+				                        <field name="message_ids" colspan="4" nolabel="1" mode="tree" readonly="1">
+				                            <tree string="History">
+				                                <field name="display_text" string="History Information"/>
+				                                <field name="email_from" invisible="1"/>
+				                                <button
+				                                    string="Reply" attrs="{'invisible': [('email_from', '=', False)]}"
+				                                    name="%(mail.action_email_compose_message_wizard)d"
+				                                    context="{'mail.compose.message.mode':'reply', 'message_id':active_id}"
+				                                    icon="terp-mail-replied" type="action" />
+				                            </tree>
+				                        </field>
+				                        <button string="Add Internal Note"
+				                            name="%(crm.action_crm_add_note)d"
+				                            context="{'model': 'crm.lead' }"
+				                            icon="terp-document-new" type="action" />
+				                        <button string="Send New Email"
+				                            name="%(mail.action_email_compose_message_wizard)d"
+				                            icon="terp-mail-message-new" type="action"/>
+				                     </page>
+				                     <page string="Extra Info" groups="base.group_extended">
+				                        <group colspan="2" col="2">
+				                            <separator string="Categorization" colspan="2" col="2"/>
+				                            <field name="company_id"
+				                                groups="base.group_multi_company"
+				                                widget="selection" colspan="2" />
+				                            <field name="channel_id" select="1" widget="selection"/>
+				                        </group>
+				                        <group colspan="2" col="2">
+				                            <separator string="Dates" colspan="2" col="2"/>
+				                            <field name="create_date"/>
+				                            <field name="write_date"/>
+				                            <field name="date_open"/>
+				                            <field name="date_closed"/>
+				                        </group>
+				                        <group colspan="2" col="2">
+				                            <separator string="Mailings" colspan="2" col="2"/>
+				                            <field name="optin" on_change="on_change_optin(optin)"/>
+				                            <field name="optout" on_change="on_change_optout(optout)"/>
+				                        </group>
+				                        <group colspan="2" col="2">
+				                            <separator string="Statistics" colspan="2" col="2"/>
+				                            <field name="day_open"/>
+				                            <field name="day_close"/>
+				                        </group>
+				                     </page>
+				                    </notebook>
+				                </form>
+                            </field>
+                            <field name="opportunity_ids2" colspan="4" nolabel="1" domain="[('type','=','opportunity')]">
+                            <tree string="Opportunities" colors="blue:state=='pending' and not(date_deadline and (date_deadline &lt; current_date));gray:state in ('cancel', 'done');red:date_deadline and (date_deadline &lt; current_date)">
+                                    <field name="date_deadline" invisible="1"/>
+                                    <field name="create_date" invisible="1"/>
+                                    <field name="partner_id" string="Customer"/>
+                                    <field name="phone"/>
+                                    <field name="mobile"/>
+                                    <field name="salesman_name"/>
+                                    <field name="planned_revenue" sum="Expected Revenues"/>
+                                    <field name="date_action"/>
+                                    <field name="user_id"/>
+                                    <field name="opportunity_type" invisible="1"/>
+                                    <field name="lead_source" invisible="1"/>
+                                    <field name="call_center_id" invisible="1"/>
+                                    <field name="city_id" invisible="1"/>                
+                                    <field name="country_id" invisible="context.get('invisible_country', True)" />
+                                    <field name="channel_id" invisible="1"/>
+                                    <field name="type_id" invisible="1"/>
+                                    <field name="subjects" invisible="1"/>
+                                    <field name="stage_id" invisible="1"/>
+                                    <field name="section_id" invisible="context.get('invisible_section', True)" />
+                                    <field name="priority" invisible="1"/>
+                                    <field name="categ_id" invisible="1"/>
+                                    <field name="state" invisible="1"/>
+                            </tree>
+                            <form string="Opportunities">
+                                    <group colspan="4" col="7">
+                                         <field name="opportunity_type" widget='selection' />
+                                         <field name="lead_source"/>
+                                         <group colspan="4" >
+                                                <field name="partner_id" select="1" colspan="3"
+                                                    on_change="onchange_partner_id(partner_id, email_from)" string="Customer" />
+                                                <button name="%(crm.action_crm_lead2partner)d"
+                                                    icon="terp-partner" type="action"
+                                                    string="Create"
+                                                    attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                                         </group>
+                                         <field name="phone"/>
+                                         <field name="phone2" string="Phone 1"/>
+                                         <field name="type_id" widget='selection' select="1"/>
+                                         <field name="mobile"/>
+                                         <field name="mobile2" string="Mobile 1"/>
+                                         <field name="priority" string="Priority"/>
+                                         <field name="stage_id" 
+                                             on_change="onchange_stage_id(stage_id)"
+                                             domain="section_id and [('section_ids', '=', section_id)] or []"/>
+                                         <field name="planned_revenue"/>
+                                         <field name="date_deadline"/>
+                                         <field name="probability"/>
+                                         <field name="date_action"/>
+                                         <field name="title_action"/>
+                                         <group col="3" colspan="2">
+                                                <field name="email_from" string="Email" />
+                                                <button string="Mail"
+                                                name="%(mail.action_email_compose_message_wizard)d"
+                                                context="{'mail':'new', 'model': 'crm.lead'}"
+                                                icon="terp-mail-message-new" type="action" />
+                                         </group>
+                                         <field name="salesman_name"/>
+                                         <field name="call_center_id" select="1"/>
+                                         <field name="user_id"/>
+                                        <field name="type" invisible="1"/>
+                                    </group>
+                                    <notebook colspan="4">
+                                    <page string="Opportunity">
+                                        <group col="4" colspan="2">
+                                            <field name="name"  required="0" invisible="1" string="Opportunity"/>
+                                        </group>
+                                        <newline />
+                                        <group col="2" colspan="2">
+                                            <separator colspan="2" string="Categorization"/>
+                                            <field name="section_id" colspan="1" widget="selection"/>
+                                            <field name="categ_id" select="1"
+                                            string="Category" widget="selection"
+                                            domain="[('object_id.model', '=', 'crm.lead')]" />
+                                            <field name="business_type"/>
+                                        </group>
+                                        <group col="10" colspan="4">
+                                            <field name="state" widget="statusbar" statusbar_visible="draft,open,done" statusbar_colors='{"pending":"blue"}'/>
+                                            <button name="case_cancel" string="Cancel" states="draft" type="object" icon="gtk-cancel" />
+                                            <button name="case_mark_lost" string="Mark Lost" states="open,pending" type="object" icon="gtk-cancel" />
+                                            <button name="case_reset" string="Reset to Draft" states="done,cancel" type="object" icon="gtk-convert" />
+                                            <button name="case_open" string="Open" states="draft,pending" type="object" icon="gtk-go-forward" />
+                                            <button name="case_pending" string="Pending" states="draft,open" type="object" icon="gtk-media-pause" />
+                                            <button name="case_escalate" string="Escalate" states="open,pending" type="object" groups="base.group_extended" icon="gtk-go-up" />
+                                            <button name="case_mark_won" string="Mark Won" states="open,pending" type="object" icon="gtk-apply" />
+                                        </group>
+                                    </page>
+                                    <page string="Lead">
+                                        <group colspan="2" col="4">
+                                            <separator string="Contact" colspan="4" col="4"/>
+                                            <field domain="[('domain', '=', 'contact')]" name="title" widget="selection"/>
+                                            <field name="partner_name" string="Customer Name" colspan="4"/>
+                                            <newline/>
+                                            <field name="street" colspan="4"/>
+                                            <field name="street2" colspan="4"/>
+                                            <field name="area_id"  domain="[('city_id','=', city_id)]"/>
+                                            <field name="zip"/>
+                                            <field name="city_id" select="1"/>
+                                            <field name="state_id"/>
+                                            <field name="email"/>
+                                        </group>
+                    <!--                    <group colspan="2" col="2">-->
+                    <!--                        <separator string="Communication" colspan="2"/>-->
+                    <!--                        <field name="phone"/>-->
+                    <!--                        <field name="phone2" string="Phone 1"/>-->
+                    <!--                        <field name="mobile"/>-->
+                    <!--                        <field name="mobile2" string="Mobile 1"/>-->
+                                            
+                    <!--                    </group>-->
+                                        <group colspan="2" col="2">
+                                            <separator string="Categorization" colspan="2"/>
+                                            <field name="channel_id" widget="selection"/>
+                                            <separator string="Mailings" colspan="2"/>
+                                            <field name="optin" on_change="on_change_optin(optin)"/>
+                                            <field name="optout" on_change="on_change_optout(optout)"/>
+                                        </group>
+                                    </page>
+                                    <page string="Communication &amp; History" groups="base.group_extended">
+                                      <group colspan="4">
+                                          <field colspan="4" name="email_cc" widget="char" size="512"/>
+                                      </group>
+                                       <field name="message_ids" colspan="4" nolabel="1" mode="tree" readonly="1">
+                                           <tree string="History">
+                                               <field name="display_text" string="History Information"/>
+                                               <field name="email_from" invisible="1"/>
+                                               <button
+                                                   string="Reply" attrs="{'invisible': [('email_from', '=', False)]}"
+                                                   name="%(mail.action_email_compose_message_wizard)d"
+                                                   context="{'mail.compose.message.mode':'reply', 'message_id':active_id}"
+                                                   icon="terp-mail-replied" type="action" />
+                                           </tree>
+                                       </field>
+                                       <button string="Add Internal Note"
+                                           name="%(crm.action_crm_add_note)d"
+                                           context="{'model': 'crm.lead' }"
+                                           icon="terp-document-new" type="action" />
+                                       <button string="Send New Email"
+                                           name="%(mail.action_email_compose_message_wizard)d"
+                                           icon="terp-mail-message-new" type="action"/>
+                                    </page>
+                                    <page string="Extra Info" groups="base.group_extended">
+                                        <group col="2" colspan="2">
+                                            <separator string="Dates" colspan="2"/>
+                                            <field name="create_date"/>
+                                            <field name="write_date"/>
+                                            <field name="date_closed"/>
+                                            <field name="date_open"/>
+                                        </group>
+                                        <group col="2" colspan="2">
+                                            <separator string="Misc" colspan="2"/>
+                                            <field name="active"/>
+                                            <field name="day_open"/>
+                                            <field name="day_close"/>
+                                            <field name="referred"/>
+                                        </group>
+                                        <separator colspan="4" string="References"/>
+                                        <field name="ref"/>
+                                        <field name="ref2"/>
+                                    </page>
+                                    </notebook>
+                                </form>
+                            </field>
+                            <field name="sales_order_ids" colspan="4" nolabel="1">
+                                <tree string="Sales Orders" colors="grey:state=='cancel';blue:state in ('waiting_date','manual');red:state in ('invoice_except','shipping_except')">
+				                    <field name="name"/>
+				                    <field name="date_order"/>
+				                    <field name="opportunity_type" invisible="1"/>
+				                    <field name="lead_source" invisible="1"/>
+				                    <field name="city_id" invisible="1"/>
+				                    <field name="call_center_id" invisible="1"/>
+				                    <field name="partner_id"/>
+				                    <field name="area_id" />
+				                    <field name="amount_total" sum="Total Tax Included"/>
+				                    <field name="salesman_name"/>
+				                    <field name="shop_id" />
+				                    <field name="delivery_id"/>
+				                    <field name="group_id"/>
+				                    <field name="state" invisible="1"/>
+				                    <field name="user_id"/>
+				                </tree>
+                                <form string="Sales Order">
+				                    <group col="6" colspan="4">
+				                            <field name="name" invisible="1"/>
+				                            <field name="opportunity_type" widget='selection' select='1'/>
+				                            <field name="lead_source" widget='selection' select='1'/>
+				                            <field name="partner_id" options='{"quick_create": false}' on_change= "onchange_partner_id(partner_id)"  domain="[('customer','=',True)]" context="{'search_default_customer':1}" required="1" />
+				                            <field name="landmark"/>
+				                            <field name="area_id"/>
+				                            <field name="city_id"/>
+				                            <field name="salesman_name"/>
+				                            <field name="call_center_id"/>
+				                            <field name="group_id" widget='selection'/>
+				                            <field name="shop_id" widget='selection' on_change="onchange_shop_id(shop_id)"/>
+				                            <field name="delivery_id"/>
+				                    </group>
+				                    <notebook colspan="5">
+				                        <page string="Sales Order">
+				                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_order_id" on_change="onchange_partner_order_id(partner_order_id, partner_invoice_id, partner_shipping_id)" options='{"quick_create": false}' />
+				                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_invoice_id" groups="base.group_extended" options='{"quick_create": false}' />
+				                            <field domain="[('partner_id','=',partner_id)]" invisible="1" name="partner_shipping_id" groups="base.group_extended" options='{"quick_create": false}' />
+				                            <field domain="[('type','=','sale')]" invisible="1" name="pricelist_id" groups="base.group_extended" on_change="onchange_pricelist_id(pricelist_id,order_line)" />
+				                            <field colspan="4" name="order_line" nolabel="1" widget="one2many_list">
+				                                <form string="Sales Order Lines">
+				                                    <notebook>
+				                                        <page string="Order Line">
+				                                        <group colspan="4" col="5">
+				                                            <field colspan="3"
+				                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+				                                                name="product_id"
+				                                                on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, True, parent.date_order, product_packaging, parent.fiscal_position, False, context)"/>
+				                                            <field name="name"/>
+				
+				                                            <field
+				                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}"
+				                                                name="product_uom_qty"
+				                                                on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, product_packaging, parent.fiscal_position, True, context)"/>
+				                                            <field name="product_uom"
+				                                                on_change="product_uom_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, context)"
+				                                                nolabel="1"/>
+				                                            <field name="price_unit"/>
+				
+				                                            <field groups="product.group_uos" name="product_uos_qty"/>
+				                                            <field groups="product.group_uos" name="product_uos" nolabel="1"/>
+				                                            <newline/>
+				                                            <field name="product_packaging"
+				                                                context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'shop':parent.shop_id, 'uom':product_uom}" on_change="product_packaging_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, parent.partner_id, product_packaging, True, context)"
+				                                                domain="[('product_id','=',product_id)]" groups="base.group_extended"
+				                                                colspan="3"/>
+				                                            <field name="discount"/>
+				                                            <separator colspan="5" string="Notes"/>
+				                                            <field colspan="5" name="notes" nolabel="1"/>
+				                                            <separator colspan="5" string="Taxes"/>
+				                                            <field colspan="5" name="tax_id" nolabel="1" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+				                                            <group colspan="5" col="5" groups="base.group_extended">
+				                                                <separator colspan="5" string="States"/>
+				                                                <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" statusbar_colors='{"exception":"red","cancel":"red"}'/>
+				                                                <field name="invoiced"/>
+				                                                <group attrs="{'invisible':[('invoiced','=',True)]}">
+				                                                    <button colspan="1" name="%(sale.action_view_sale_order_line_make_invoice)d" states="confirmed" string="Make Invoices" type="action" icon="terp-document-new"/>
+				                                                </group>
+				                                            </group>
+				                                        </group>
+				                                        </page>
+				                                        <page groups="base.group_extended" string="Extra Info">
+				                                            <field name="type"/>
+				                                            <field name="delay"/>
+				                                            <field name="th_weight"/>
+				                                            <field name="address_allotment_id"/>
+				                                            <separator colspan="4" string="Properties"/>
+				                                            <field name="property_ids" colspan="4" nolabel="1"/>
+				                                        </page>
+				                                        <page string="History" groups="base.group_extended">
+				                                            <separator colspan="4" string="Invoice Lines"/>
+				                                            <field colspan="4" name="invoice_lines" nolabel="1"/>
+				                                            <separator colspan="4" string="Stock Moves"/>
+				                                            <field colspan="4" name="move_ids" nolabel="1" widget="many2many"/>
+				                                        </page>
+				                                    </notebook>
+				                                </form>
+				                                <tree string="Sales Order Lines">
+				                                    <field colspan="4" name="name"/>
+				                                    <field name="product_uom_qty" string="Qty(UoM)"/>
+				                                    <field name="product_uom" string="UoM"/>
+				                                    <field groups="product.group_uos" name="product_uos_qty" string="Qty(UoS)"/>
+				                                    <field groups="product.group_uos" name="product_uos" string="UoS"/>
+				                                    <field name="discount"/>
+				                                    <field name="price_unit"/>
+				                                    <field name="price_subtotal"/>
+				                                </tree>
+				                            </field>
+				                            <newline/>
+				                            <group col="13" colspan="10">
+				                                <field name="amount_untaxed" sum="Untaxed amount"/>
+				                                <field name="amount_tax"/>
+				                                <field name="amount_total"/>
+				                                <button name="button_dummy" states="draft" string="Compute" type="object" icon="gtk-execute"/>
+				                                <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Advance Invoice" type="action" icon="gtk-execute" states="draft,manual" groups="base.group_extended"/>
+				                            </group>
+				                            <group col="17" colspan="4">
+				                                <field name="state" widget="statusbar" statusbar_visible="draft,progress,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
+				                                <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" icon="gtk-go-forward"/>
+				                                <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" icon="gtk-apply"/>
+				                                <button name="ship_recreate" states="shipping_except" string="Recreate Packing" icon="gtk-ok"/>
+				                                <button name="ship_corrected" states="shipping_except" string="Ignore Exception" icon="gtk-apply"/>
+				                                <button name="action_cancel" states="manual,progress" string="Cancel Order" type="object" icon="gtk-cancel"/>
+				                                <button name="%(sale.report_sale_order)d" string="Print Order" type="action" icon="gtk-print" states="waiting_date,manual,progress,done,shipping_except,invoice_except"/>
+				                                <button name="manual_invoice" states="manual" string="Create Final Invoice" icon="gtk-go-forward" type="object"/>
+				                                <button name="ship_cancel" states="shipping_except" string="Cancel Order" icon="gtk-cancel"/>
+				                                <button name="action_cancel_draft" states="cancel" string="Set to Draft" type="object" icon="gtk-convert"/>
+				                                <button name="cancel" states="draft" string="Cancel Order" icon="gtk-cancel"/>
+				                                <button name="invoice_cancel" states="invoice_except" string="Cancel Order" icon="gtk-cancel"/>
+				                                <button name="%(sale.report_sale_order)d" string="Print Quotation" type="action" icon="gtk-print" states="draft"/>
+				                                <button name="order_confirm" states="draft" string="Confirm Order" icon="gtk-apply"/>
+				                            </group>
+				                        </page>
+				                        <page string="History" groups="base.group_extended">
+				                            <separator colspan="4" string="Invoices"/>
+				                            <field colspan="4" name="invoice_ids" nolabel="1" context="{'form_view_ref':'account.invoice_form'}"/>
+				                            <separator colspan="4" string="Packings"/>
+				                            <field colspan="4" name="picking_ids" nolabel="1"/>
+				                        </page>
+				                        <page string="Other Information">
+				                            <group colspan="2" col="2" groups="base.group_extended" name="logistics">
+				                                <separator string="Logistic" colspan="2"/>
+				                                <field name="incoterm" widget="selection"/>
+				                                <field name="picking_policy" required="True"/>
+				                                <field name="order_policy" on_change="shipping_policy_change(order_policy)"/>
+				                                <field name="invoice_quantity" attrs="{'readonly':[('order_policy','in',('prepaid','picking'))]}"/>
+				                            </group>
+				                            <group colspan="2" col="2">
+				                                <separator string="References" colspan="2"/>
+				                                <field name="user_id"/>
+				                                <field groups="base.group_extended" name="origin"/>
+				                            </group>
+				                            <group colspan="2" col="2" groups="base.group_extended">
+				                                <separator string="Conditions" colspan="2"/>
+				                                <field name="payment_term" widget="selection"/>
+				                                <field name="fiscal_position" widget="selection"/>
+				                                <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+				                            </group>
+				                            <group colspan="2" col="2" groups="base.group_extended">
+				                                <separator string="Dates" colspan="2"/>
+				                                <field name="create_date"/>
+				                                <field name="date_confirm"/>
+				                            </group>
+				                            <separator colspan="4" string="Notes"/>
+				                            <field colspan="4" name="note" nolabel="1"/>
+				                        </page>
+				                    </notebook>
+				                </form>
+                            </field>
+                            <field name="picking_ids" colspan="4" nolabel="1"/>
+                            <field name="meeting_ids" colspan="4" nolabel="1">
+                            </field>
+                            <field name="phonecall_ids" colspan="4" nolabel="1">
+                            </field>
+                            <field name="emails" colspan="4" nolabel="1">
+                            </field>
+                        </page>
+                        <page string="Sales &amp; Purchases">
+                            <group col="2" colspan="2">
+                            <separator string="General Information" colspan="4"/>
+                            <field name="customer_source"/>
+                            <field name="website" widget="url"/>
+                            <field name="date"/>
+                            <field name="parent_id" groups="base.group_extended"/>
+                            <field name="lang"/>
+                            </group>
+                            <group col="2" colspan="2">
+                            <separator string="Finance Information" colspan="4"/>
+                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                            <field name="credit"/>
+                            <field name="debit"/>
+                            <field name="credit_limit"/>
+                            
+                            <field name="override_limit" groups="base.group_force_creditlimit"/>
+                            </group>
+                            <group col="2" colspan="2">
+                                
+                                <separator string="Customer Accounting Properties" colspan="2"/>
+                                <field name="property_account_receivable" groups="account.group_account_invoice" />
+                                <field name="property_payment_term" widget="selection"/>
+                                <field name="property_product_pricelist"/>
+                            </group>
+                            <group col="2" colspan="2">
+                                <separator string="Supplier Accounting Properties" colspan="2"/>
+                                <field name="property_account_payable" groups="account.group_account_invoice"/>
+                                <field name="property_product_pricelist_purchase"/>
+                            </group>
+                            <newline/>
+                        </page>
+                        <page string="Notes">
+                            <field colspan="4" name="comment" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="base.action_partner_form_view2" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_sabugar_partner_form"/>
+            <field name="act_window_id" ref="base.action_partner_form"/>
+        </record>
+
+        <!-- Link for Sales Order -->
+
+        <act_window
+	        id="sabugar_sales_order"
+	        name="Sales Order"
+	        res_model="sale.order"
+	        src_model="res.partner"
+	        view_mode="form"
+	        context="{'default_partner_id': active_id}"/>
+	        
+        <record id="view_sabugar_crm_case_leads_filter" model="ir.ui.view">
+            <field name="name">CRM - Leads Search</field>
+            <field name="model">crm.lead</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Search Leads">
+                    <filter icon="terp-check"
+                        string="New"
+                        name="new" help="New Leads"
+                        domain="[('state','=','draft')]"/>
+                    <filter icon="terp-camera_test"
+                        string="Open"
+                        name="open"
+                        domain="[('state','=','open')]"/>
+                    <filter icon="terp-gtk-media-pause"
+                        string="Pending"
+                        name="pending"
+                        domain="[('state','=','pending')]"/>
+    
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-go-today" string="Today"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')), ('create_date','&gt;=', time.strftime('%%Y-%%m-%%d'))]"
+                        help="Todays' Leads" />
+                    <filter icon="terp-go-week" string="Week"
+                        help="Leads creating during last 7 days"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Fortnight"
+                        help="Leads creating during last 15 days"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=15)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Month"
+                            name="month"
+                            domain="[('create_date','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"
+                            help="Leads creating during this month."/>
+                    <filter icon="terp-go-year" string="Year" 
+                            name="year"
+                            domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',time.strftime('%%Y-01-01'))]"
+                            help="Leads creating during this year"/>
+                    <newline />
+                    <field name="lead_source" />
+                    <field name="create_date" />
+                    <field name="name" string="Lead / Customer"
+                        filter_domain="['|','|','|','|','|','|',('partner_name','ilike',self),('email_from','ilike',self),('name','ilike',self),('phone','ilike',self),('phone2','ilike',self),('mobile','ilike',self),('mobile2','ilike',self)]"/>
+                    <field name="contact_name" />
+                    <field name="phone" />
+                    <field name="mobile" />
+                    <field name="city_id" />
+                    <newline />
+                    <field name="referredby" string="Referredby / Customer"
+                            filter_domain="['|','|',('partner_name','ilike',self),('email_from','ilike',self),('referredby','ilike',self)]"/>
+                    <field name="priority" />
+                    <field name="type_id" />
+                    <field name="user_id">
+                        <filter icon="terp-personal-"
+                            domain="[('user_id','=', False)]"
+                            help="Unassigned Leads" />
+                    </field>
+                    <field name="subjects" groups="base.group_extended" invisible="1"/>
+                    <field name="section_id" widget="selection"
+                        context="{'invisible_section': False}">
+                        <filter icon="terp-personal+" groups="base.group_extended"
+                            context="{'invisible_section': False}"
+                            domain="['|', ('section_id', '=', context.get('section_id')), '|', ('section_id.user_id','=',uid), ('section_id.member_ids', 'in', [uid])]"
+                            help="My Sales Team(s)"/>
+                    <filter icon="terp-personal+" groups="base.group_extended"
+                            context="{'invisible_section': False}"
+                            domain="[]" 
+                            help="Show Sales Team"/>
+                    </field>
+                    <newline />
+                    <separator orientation="vertical"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Lead Source" help="Lead Source" icon="terp-personal"
+                            domain="[]" context="{'group_by':'lead_source'}" />
+                        <filter string="Team" icon="terp-personal+" domain="[]" context="{'group_by':'section_id'}"/>
+                        <filter string="Referrer" icon="terp-personal" domain="[]" context="{'group_by':'referredby'}"/>
+                        <filter string="Salesman" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Category" icon="terp-stock_symbol-selection" domain="[]" context="{'group_by':'categ_id'}"/>
+                        <filter string="Campaign" icon="terp-gtk-jump-to-rtl"
+                            domain="[]" context="{'group_by':'type_id'}" />
+                        <filter string="Channel" icon="terp-call-start"
+                            domain="[]" context="{'group_by':'channel_id'}" />
+                        <separator orientation="vertical"/>
+                        <filter string="Stage" icon="terp-stage" domain="[]" context="{'group_by':'stage_id'}"/>
+                        <filter string="State" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Creation" help="Create date" icon="terp-go-month"
+                            domain="[]" context="{'group_by':'create_date'}" />
+                        <separator orientation="vertical"/>
+                        <filter string="City" help="City" icon="terp-rating-rated"
+                            domain="[]" context="{'group_by':'city_id'}" />
+                        <filter string="State" help="State" icon="terp-rating-rated"
+                            domain="[]" context="{'group_by':'state_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        
+        <record model="ir.ui.view" id="sabugar_crm_case_tree_view_leads">
+	        <field name="name">Leads</field>
+	        <field name="model">crm.lead</field>
+	        <field name="type">tree</field>
+	        <field name="arch" type="xml">
+	            <tree string="Leads"  colors="blue:state=='pending';grey:state in ('cancel', 'done')">
+	                <field name="date_deadline" invisible="1"/>
+	                <field name="lead_source" />
+	                <field name="contact_name" />
+	                <field name="create_date" invisible="1"/>
+	                <field name="state_id" invisible="1"/>
+	                <field name="stage_id" invisible="1"/>
+	                <field name="categ_id" invisible="1"/>
+                    <field name="referredby" invisible="1"/>
+                    <field name="channel_id" invisible="1"/>
+                    <field name="subjects" invisible="1"/>
+                    <field name="section_id" invisible="1"/>
+	                <field name="phone"/>
+	                <field name="mobile"/>
+	                <field name="city_id"/>
+	                <field name="priority"/>
+	                <field name="type_id" />
+	                <field name="user_id" />
+	                <field name="state" invisible="1"></field>
+	            </tree>
+	        </field>
+	    </record>
+        <!-- CRM Lead Form View  -->
+        <record model="ir.ui.view" id="crm_sabugar_case_form_view_leads">
+	        <field name="name">CRM Sabugar - Leads Form</field>
+	        <field name="model">crm.lead</field>
+	        <field name="type">form</field>
+	        <field name="arch" type="xml">
+	            <form string="Leads Form">
+	                <group colspan="4" col="6">
+                        <field name="lead_source" select="1"/>
+                        <field domain="[('domain', '=', 'contact')]" name="title" widget="selection" />
+                        <field name="contact_name" select="1"/>
+                        <group col="3" colspan="4" >
+                            <field name="name" string="Subject" colspan="2" invisible="1"/>
+<!--                            <button-->
+<!--                            name="%(crm.action_crm_lead2opportunity_partner)d"-->
+<!--                            string="Convert to Opportunity"-->
+<!--                            help="Convert to Opportunity" icon="gtk-go-forward"-->
+<!--                            type="action" -->
+<!--                            />-->
+                         </group>                        
+                        <field name="street" colspan="6"/>
+                    </group>
+                    <group col="6" colspan="4">
+                        <field name="street2"/>
+                        <field name="area_id" />
+                        <field name="city_id" select="1"/>
+                        <field name="zip"/>
+                        <field name="state_id" domain="[('country_id.code','=','IN')]" on_change="on_change_stage(stage_id)"/>
+                        <field name="phone" select="1"/>
+                        <field name="phone2" string="Phone 1"/>
+                        <field name="mobile" select="1"/>
+                        <field name="mobile2" string="Mobile 1"/>
+                        <field name="user_id" select="1"/>
+                        <group col="6" colspan="3">
+	                        <field name="email_from" widget="email"/>
+	                        <button string="Mail"
+	                                name="%(mail.action_email_compose_message_wizard)d"
+	                                icon="terp-mail-message-new" type="action"/>
+                        </group>
+                    </group>
+                    <field name="type" invisible="1"/>
+	                <notebook colspan="4">
+	                <page string="Lead">
+	                    <field name="type_id" select="1" widget="selection"/>
+	                    <field name="priority" select="1"/>
+	                    <field name="stage_id" domain="section_id and [('section_ids', '=', section_id)] or []" />
+	                    <field name="categ_id"
+                            widget="selection"
+                            domain="[('object_id.model','=','crm.lead')]"/>
+                        <field name="section_id" widget="selection" />
+                        <field name="referredby" />
+	                    <separator colspan="4" string="Notes"/>
+	                    <field name="description" nolabel="1" colspan="4"/>
+	                    <separator colspan="4"/>
+	                    <group col="8" colspan="4">
+	                        <field name="state" widget="statusbar" statusbar_visible="draft,open,done" statusbar_colors='{"pending":"blue"}'/>
+	                        <button name="case_cancel" string="Cancel"
+	                            states="draft,open,pending" type="object"
+	                            icon="gtk-cancel" />
+	                        <button name="case_open" string="Open"
+	                            states="draft,pending" type="object"
+	                            icon="gtk-go-forward" />
+	                        <button name="case_mark_lost" string="Close"
+	                            states="open,pending" type="object"
+	                            icon="gtk-close" />
+	                        <button name="case_pending" string="Pending"
+	                            states="open" type="object"
+	                            icon="gtk-media-pause" />
+	                        <button name="case_escalate" string="Escalate"
+	                            states="open,pending" type="object"
+	                            groups="base.group_extended"
+	                            icon="gtk-go-up" />
+	                        <button name="case_reset"
+	                            string="Reset to Draft" states="done,cancel"
+	                            type="object" icon="gtk-convert" />
+	                    </group>
+	                 </page>
+	                 <page string="Communication &amp; History" groups="base.group_extended">
+	                   <group colspan="4">
+	                       <field colspan="4" name="email_cc" widget="char" size="512"/>
+	                   </group>
+	                    <field name="message_ids" colspan="4" nolabel="1" mode="tree" readonly="1">
+	                        <tree string="History">
+	                            <field name="display_text" string="History Information"/>
+	                            <field name="email_from" invisible="1"/>
+	                            <button
+	                                string="Reply" attrs="{'invisible': [('email_from', '=', False)]}"
+	                                name="%(mail.action_email_compose_message_wizard)d"
+	                                context="{'mail.compose.message.mode':'reply', 'message_id':active_id}"
+	                                icon="terp-mail-replied" type="action" />
+	                        </tree>
+	                    </field>
+	                    <button string="Add Internal Note"
+	                        name="%(crm.action_crm_add_note)d"
+	                        context="{'model': 'crm.lead' }"
+	                        icon="terp-document-new" type="action" />
+	                    <button string="Send New Email"
+	                        name="%(mail.action_email_compose_message_wizard)d"
+	                        icon="terp-mail-message-new" type="action"/>
+	                 </page>
+	                 <page string="Extra Info" groups="base.group_extended">
+	                    <group colspan="2" col="2">
+	                        <separator string="Categorization" colspan="2" col="2"/>
+	                        <field name="company_id"
+	                            groups="base.group_multi_company"
+	                            widget="selection" colspan="2" />
+	                        <field name="channel_id" select="1" widget="selection"/>
+	                    </group>
+	                    <group colspan="2" col="2">
+	                        <separator string="Dates" colspan="2" col="2"/>
+	                        <field name="create_date"/>
+	                        <field name="write_date"/>
+	                        <field name="date_open"/>
+	                        <field name="date_closed"/>
+	                    </group>
+	                    <group colspan="2" col="2">
+	                        <separator string="Mailings" colspan="2" col="2"/>
+	                        <field name="optin" on_change="on_change_optin(optin)"/>
+	                        <field name="optout" on_change="on_change_optout(optout)"/>
+	                    </group>
+	                    <group colspan="2" col="2">
+	                        <separator string="Statistics" colspan="2" col="2"/>
+	                        <field name="day_open"/>
+	                        <field name="day_close"/>
+	                    </group>
+	                 </page>
+	                </notebook>
+	            </form>
+	        </field>
+        </record>
+        <record model="ir.actions.act_window.view" id="crm.action_crm_tag_tree_view_leads_all">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sabugar_crm_case_tree_view_leads"/>
+            <field name="act_window_id" ref="crm.crm_case_category_act_leads_all"/>
+        </record>
+        <record model="ir.actions.act_window" id="crm.crm_case_category_act_leads_all">
+            <field name="name">Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
+            <field name="view_id" ref="sabugar_crm_case_tree_view_leads"/>
+            <field name="search_view_id" ref="view_sabugar_crm_case_leads_filter"/>
+            <field name="context">{'search_default_new':1, 'default_type': 'lead', 'search_default_section_id': section_id,'search_default_month' : 1,'stage_type': 'lead'}</field>
+            <field name="help">Leads allow you to manage and keep track of all initial contacts with a prospect or partner showing interest in your products or services. A lead is usually the first step in your sales cycle. Once qualified, a lead may be converted into a business opportunity, while creating the related partner for further detailed tracking of any linked activities. You can import a database of prospects, keep track of your business cards or integrate your website's contact form with the OpenERP Leads. Leads can be connected to the email gateway: new emails may create leads, each of them automatically gets the history of the conversation with the prospect.</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="crm.action_crm_tag_form_view_leads_all">
+	        <field name="sequence" eval="3"/>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="crm_sabugar_case_form_view_leads"/>
+	        <field name="act_window_id" ref="crm.crm_case_category_act_leads_all"/>
+        </record>
+
+    <!-- Opportunities Form View -->
+    <record model="ir.ui.view" id="sabugar_crm_case_form_view_oppor">
+        <field name="name">Opportunities</field>
+        <field name="model">crm.lead</field>
+        <field name="type">form</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form string="Opportunities">
+                <group colspan="4" col="7">
+                     <field name="opportunity_type" widget='selection' />
+                     <field name="lead_source"/>
+                     <button string="Schedule/Log Call"
+                        name="%(crm.opportunity2phonecall_act)d" icon="terp-call-start"
+                        type="action"/>
+                     <group colspan="4" >
+                            <field name="partner_id" select="1" colspan="3"
+                                on_change="onchange_partner_id(partner_id, email_from)" string="Customer" />
+                            <button name="%(crm.action_crm_lead2partner)d"
+                                icon="terp-partner" type="action"
+                                string="Create"
+                                attrs="{'invisible':[('partner_id','!=',False)]}"/>
+                     </group>
+                     <field name="phone"/>
+                     <field name="phone2" string="Phone 1"/>
+                     <field name="type_id" widget='selection' select="1"/>
+                     <field name="mobile"/>
+                     <field name="mobile2" string="Mobile 1"/>
+                     <field name="priority" string="Priority"/>
+                     <field name="stage_id" 
+                         on_change="onchange_stage_id(stage_id)"
+                         domain="section_id and [('section_ids', '=', section_id)] or []"/>
+                     <field name="planned_revenue"/>
+                     <field name="date_deadline"/>
+                     <field name="probability"/>
+                     <field name="date_action"/>
+                     <field name="title_action"/>
+                     <group col="3" colspan="2">
+                            <field name="email_from" string="Email" />
+                            <button string="Mail"
+                            name="%(mail.action_email_compose_message_wizard)d"
+                            context="{'mail':'new', 'model': 'crm.lead'}"
+                            icon="terp-mail-message-new" type="action" />
+                     </group>
+                     <field name="salesman_name"/>
+                     <field name="call_center_id" select="1"/>
+                     <field name="user_id"/>
+                    <field name="type" invisible="1"/>
+                </group>
+                <notebook colspan="4">
+                <page string="Opportunity">
+                    <group col="4" colspan="2">
+                        <field name="name"  required="0" invisible="1" string="Opportunity"/>
+                    </group>
+                    <newline />
+                    <group col="2" colspan="2">
+                        <separator colspan="2" string="Categorization"/>
+                        <field name="section_id" colspan="1" widget="selection"/>
+                        <field name="categ_id" select="1"
+                        string="Category" widget="selection"
+                        domain="[('object_id.model', '=', 'crm.lead')]" />
+                        <field name="business_type"/>
+                    </group>
+                    <group col="10" colspan="4">
+                        <field name="state" widget="statusbar" statusbar_visible="draft,open,done" statusbar_colors='{"pending":"blue"}'/>
+                        <button name="case_cancel" string="Cancel" states="draft" type="object" icon="gtk-cancel" />
+                        <button name="case_mark_lost" string="Mark Lost" states="open,pending" type="object" icon="gtk-cancel" />
+                        <button name="case_reset" string="Reset to Draft" states="done,cancel" type="object" icon="gtk-convert" />
+                        <button name="case_open" string="Open" states="draft,pending" type="object" icon="gtk-go-forward" />
+                        <button name="case_pending" string="Pending" states="draft,open" type="object" icon="gtk-media-pause" />
+                        <button name="case_escalate" string="Escalate" states="open,pending" type="object" groups="base.group_extended" icon="gtk-go-up" />
+                        <button name="case_mark_won" string="Mark Won" states="open,pending" type="object" icon="gtk-apply" />
+                    </group>
+                </page>
+                <page string="Lead">
+                    <group colspan="2" col="4">
+                        <separator string="Contact" colspan="4" col="4"/>
+                        <field domain="[('domain', '=', 'contact')]" name="title" widget="selection"/>
+                        <field name="partner_name" string="Customer Name" colspan="4"/>
+                        <newline/>
+                        <field name="street" colspan="4"/>
+                        <field name="street2" colspan="4"/>
+                        <field name="area_id"  domain="[('city_id','=', city_id)]"/>
+                        <field name="zip"/>
+                        <field name="city_id" select="1"/>
+                        <field name="state_id"/>
+                        <field name="email"/>
+                    </group>
+<!--                    <group colspan="2" col="2">-->
+<!--                        <separator string="Communication" colspan="2"/>-->
+<!--                        <field name="phone"/>-->
+<!--                        <field name="phone2" string="Phone 1"/>-->
+<!--                        <field name="mobile"/>-->
+<!--                        <field name="mobile2" string="Mobile 1"/>-->
+                        
+<!--                    </group>-->
+                    <group colspan="2" col="2">
+                        <separator string="Categorization" colspan="2"/>
+                        <field name="channel_id" widget="selection"/>
+                        <separator string="Mailings" colspan="2"/>
+                        <field name="optin" on_change="on_change_optin(optin)"/>
+                        <field name="optout" on_change="on_change_optout(optout)"/>
+                    </group>
+                </page>
+                <page string="Communication &amp; History" groups="base.group_extended">
+                  <group colspan="4">
+                      <field colspan="4" name="email_cc" widget="char" size="512"/>
+                  </group>
+                   <field name="message_ids" colspan="4" nolabel="1" mode="tree" readonly="1">
+                       <tree string="History">
+                           <field name="display_text" string="History Information"/>
+                           <field name="email_from" invisible="1"/>
+                           <button
+                               string="Reply" attrs="{'invisible': [('email_from', '=', False)]}"
+                               name="%(mail.action_email_compose_message_wizard)d"
+                               context="{'mail.compose.message.mode':'reply', 'message_id':active_id}"
+                               icon="terp-mail-replied" type="action" />
+                       </tree>
+                   </field>
+                   <button string="Add Internal Note"
+                       name="%(crm.action_crm_add_note)d"
+                       context="{'model': 'crm.lead' }"
+                       icon="terp-document-new" type="action" />
+                   <button string="Send New Email"
+                       name="%(mail.action_email_compose_message_wizard)d"
+                       icon="terp-mail-message-new" type="action"/>
+                </page>
+                <page string="Extra Info" groups="base.group_extended">
+                    <group col="2" colspan="2">
+                        <separator string="Dates" colspan="2"/>
+                        <field name="create_date"/>
+                        <field name="write_date"/>
+                        <field name="date_closed"/>
+                        <field name="date_open"/>
+                    </group>
+                    <group col="2" colspan="2">
+                        <separator string="Misc" colspan="2"/>
+                        <field name="active"/>
+                        <field name="day_open"/>
+                        <field name="day_close"/>
+                        <field name="referred"/>
+                    </group>
+                    <separator colspan="4" string="References"/>
+                    <field name="ref"/>
+                    <field name="ref2"/>
+                </page>
+                <page string="Call History" groups="base.group_extended">
+                    <field name="phonecall_history_ids" nolabel="1"/>
+                </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+     <record model="ir.actions.act_window.view" id="crm.action_crm_tag_form_view_oppor11">
+          <field name="sequence" eval="2"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="sabugar_crm_case_form_view_oppor"/>
+          <field name="act_window_id" ref="crm.crm_case_category_act_oppor11"/>
+     </record>
+
+        <!-- opportunity search inherited view -->
+        <record id='sabugar_crm_opportunity_search_view' model='ir.ui.view'>
+            <field name="name">sabugar crm opportunity view</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter" />
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                 <xpath expr="/search/filter[@name='pending']" position='after'>
+                    <separator orientation="vertical"/>
+                    <filter icon="terp-go-today" string="Today"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')), ('create_date','&gt;=', time.strftime('%%Y-%%m-%%d'))]"
+                        help="Todays' Leads" />
+                    <filter icon="terp-go-week" string="Week"
+                        help="Leads creating during last 7 days"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Fortnight"
+                        help="Leads creating during last 15 days"
+                        domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-datetime.timedelta(days=15)).strftime('%%Y-%%m-%%d'))]"
+                    />
+                    <filter icon="terp-go-month" string="Month"
+                            name="month"
+                            domain="[('create_date','&lt;=',(datetime.date.today()+relativedelta(day=31)).strftime('%%Y-%%m-%%d')),('create_date','&gt;=',(datetime.date.today()-relativedelta(day=1)).strftime('%%Y-%%m-%%d'))]"
+                            help="Leads creating during this month."/>
+                    <filter icon="terp-go-year" string="Year" 
+                            name="year"
+                            domain="[('create_date','&lt;=', time.strftime('%%Y-%%m-%%d')),('create_date','&gt;=',time.strftime('%%Y-01-01'))]"
+                            help="Leads creating during this year"/>
+                    <newline />
+                 <field name="create_date" />
+                 </xpath>
+                 <xpath expr="/search/field[@name='name']" position='replace'>
+                    <field name="name" string="Opportunity / Customer"
+                    filter_domain="['|','|','|','|','|','|','|',('partner_id','ilike',self),('partner_name','ilike',self),('email_from','ilike',self),('name', 'ilike', self),('phone', 'ilike', self),('phone2', 'ilike', self),('mobile', 'ilike', self),('mobile2', 'ilike', self)]"/>
+                    <field name="city_id"/>
+                    <field name="type_id"/>
+                    <field name="call_center_id"/>
+                 </xpath>
+                 <xpath expr="/search/group/filter[@string='Customer']" position='replace'>
+                    <filter string="Customer Type" help="Customer Type" icon="terp-personal+" domain="[]" context="{'group_by':'opportunity_type'}"/>
+                    <filter string="Lead Source" help="Lead Source" icon="terp-rating-rated" domain="[]" context="{'group_by':'lead_source'}"/>
+                    <filter string="Sales Man" help="Sales Man" icon="terp-rating-rated" domain="[]" context="{'group_by':'user_id'}"/>
+                    <filter string="Call Center" help="Call Center" icon="terp-rating-rated" domain="[]" context="{'group_by':'call_center_id'}"/>
+                 </xpath>
+            </field>
+        </record>
+
+    <!-- Opportunities Tree View -->
+    <record model="ir.ui.view" id="sabugar_crm_case_tree_view_oppor">
+        <field name="name">Opportunities Tree</field>
+        <field name="model">crm.lead</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Opportunities" colors="blue:state=='pending' and not(date_deadline and (date_deadline &lt; current_date));gray:state in ('cancel', 'done');red:date_deadline and (date_deadline &lt; current_date)">
+                <field name="date_deadline" invisible="1"/>
+                <field name="create_date" invisible="1"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="phone"/>
+                <field name="mobile"/>
+                <field name="salesman_name"/>
+                <field name="planned_revenue" sum="Expected Revenues"/>
+                <field name="date_action"/>
+                <field name="user_id"/>
+                <field name="opportunity_type" invisible="1"/>
+                <field name="lead_source" invisible="1"/>
+                <field name="call_center_id" invisible="1"/>
+                <field name="city_id" invisible="1"/>                
+                <field name="country_id" invisible="context.get('invisible_country', True)" />
+                <field name="channel_id" invisible="1"/>
+                <field name="type_id" invisible="1"/>
+                <field name="subjects" invisible="1"/>
+                <field name="stage_id" invisible="1"/>
+                <field name="section_id" invisible="context.get('invisible_section', True)" />
+                <field name="priority" invisible="1"/>
+                <field name="categ_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    
+     <record model="ir.actions.act_window.view" id="crm.action_crm_tag_tree_view_oppor11">
+          <field name="sequence" eval="1"/>
+          <field name="view_mode">tree</field>
+          <field name="view_id" ref="sabugar_crm_case_tree_view_oppor"/>
+          <field name="act_window_id" ref="crm.crm_case_category_act_oppor11"/>
+     </record>
+     <record model="ir.actions.act_window" id="crm.crm_case_category_act_oppor11">
+          <field name="name">Opportunities</field>
+          <field name="res_model">crm.lead</field>
+          <field name="view_mode">kanban,tree,form,graph,calendar</field>
+          <field name="domain">[('type','=','opportunity')]</field>
+          <field name="context">{'search_default_new':1, 'search_default_open':1, 'search_default_section_id':section_id, 'search_default_month':1,'stage_type': 'opportunity', 'default_type': 'opportunity'}</field>
+          <field name="view_id" eval="False"/>
+          <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+          <field name="help">With opportunities you can manage and keep track of your sales pipeline by creating specific customer- or prospect-related sales documents to follow up potential sales. Information such as expected revenue, opportunity stage, expected closing date, communication history and much more can be stored. Opportunities can be connected to the email gateway: new emails may create opportunities, each of them automatically gets the history of the conversation with the customer.
+
+You and your team(s) will be able to plan meetings and phone calls from opportunities, convert them into quotations, manage related documents, track all customer related activities, and much more.</field>
+     </record>
+        <record id='sabugar_lead_source_search' model='ir.ui.view'>
+            <field name="name">sabugar lead source search</field>
+            <field name="model">lead.source</field>
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                <search string='Lead Source '>
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>        
+
+        <record id='sabugar_lead_source_form' model='ir.ui.view'>
+            <field name="name">sabugar lead source form</field>
+            <field name="model">lead.source</field>
+            <field name="type">form</field>
+            <field name='arch' type='xml'>
+                <form string='Lead Source '>
+                    <field name="name"/>
+                    <field name="code"/>
+                </form>
+            </field>
+        </record>
+
+        <record id='sabugar_lead_source_tree' model='ir.ui.view'>
+            <field name="name">sabugar lead source tree</field>
+            <field name="model">lead.source</field>
+            <field name="type">tree</field>
+            <field name='arch' type='xml'>
+                <tree string='Lead Source '>
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id='sabugar_opp_search' model='ir.ui.view'>
+            <field name="name">sabugar opp search</field>
+            <field name="model">opportunity.type</field>
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                <search string='Opportunity Type'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+
+        <record id='sabugar_opp_form' model='ir.ui.view'>
+            <field name="name">sabugar opp form</field>
+            <field name="model">opportunity.type</field>
+            <field name="type">form</field>
+            <field name='arch' type='xml'>
+                <form string='Opportunity Type'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </form>
+            </field>
+        </record>
+
+
+        <record id='sabugar_opp_tree' model='ir.ui.view'>
+            <field name="name">sabugar opp tree</field>
+            <field name="model">opportunity.type</field>
+            <field name="type">tree</field>
+            <field name='arch' type='xml'>
+                <tree string='Opportunity Type'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+       
+        <!-- City and Area -->
+        
+        <record id='sabugar_city_area_search' model='ir.ui.view'>
+            <field name="name">sabugar city area search</field>
+            <field name="model">sabugar.city.area</field>
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                <search string='Area'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id='sabugar_city_area_tree' model='ir.ui.view'>
+            <field name="name">sabugar city area tree</field>
+            <field name="model">sabugar.city.area</field>
+            <field name="type">tree</field>
+            <field name='arch' type='xml'>
+                <tree string='Area'>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="city_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id='sabugar_city_area_form' model='ir.ui.view'>
+            <field name="name">sabugar city area form</field>
+            <field name="model">sabugar.city.area</field>
+            <field name="type">form</field>
+            <field name='arch' type='xml'>
+                <form string='Area'>
+	                <field name="name"/>
+	                <field name="code"/>
+	                <field name="city_id"/>
+                </form>
+            </field>
+        </record>
+
+        <record id='sabugar_city_search' model='ir.ui.view'>
+            <field name="name">sabugar city search</field>
+            <field name="model">sabugar.city</field>
+            <field name="type">search</field>
+            <field name='arch' type='xml'>
+                <search string='City'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </search>
+            </field>
+        </record>
+     
+        <record id='sabugar_city_tree' model='ir.ui.view'>
+            <field name="name">sabugar city tree</field>
+            <field name="model">sabugar.city</field>
+            <field name="type">tree</field>
+            <field name='arch' type='xml'>
+                <tree string='City'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id='sabugar_city_form' model='ir.ui.view'>
+            <field name="name">sabugar city form</field>
+            <field name="model">sabugar.city</field>
+            <field name="type">form</field>
+            <field name='arch' type='xml'>
+                <form string='City'>
+	                <field name="name"/>
+	                <field name="code"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_lead_source_type" model="ir.actions.act_window">
+            <field name="name">Lead Source</field>
+            <field name="res_model">lead.source</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>        
+
+        <record id="action_sabugar_opp_type" model="ir.actions.act_window">
+            <field name="name">Opportunity Type</field>
+            <field name="res_model">opportunity.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        
+        <record id="action_sabugar_city_area" model="ir.actions.act_window">
+            <field name="name">Area</field>
+            <field name="res_model">sabugar.city.area</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record id="action_sabugar_city" model="ir.actions.act_window">
+            <field name="name">City</field>
+            <field name="res_model">sabugar.city</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <menuitem action="action_lead_source_type" id="menu_lead_source_type" parent="base.menu_crm_config_lead" sequence="5"/>
+        <menuitem action="action_sabugar_opp_type" id="id_opportunity_type" parent="base.menu_crm_config_lead" sequence="4"/>
+        <menuitem action="action_sabugar_city_area" id="menu_sabugar_city_area" parent="base.menu_localisation" sequence="2"/>
+        <menuitem action="action_sabugar_city" id="menu_sabugar_city" parent="base.menu_localisation" sequence="3"/>
+        
+        <delete model="ir.actions.act_window" id="crm.action_crm_send_mass_convert"/>
+        
+        <act_window id="sabugar_action_crm_send_mass_convert"
+            key2="client_action_multi" name="Convert to Opportunities"
+            res_model="crm.lead2opportunity.partner.mass" src_model="crm.lead"
+            view_mode="form" target="new" view_type="form"
+            context="{'mass_convert' : True}"
+            view_id="crm.view_crm_lead2opportunity_partner_mass"/> 
+
+        <report auto="False" id="account.account_overdue" groups="base.group_sale_manager" model="res.partner" name="account.overdue" rml="account/report/account_print_overdue.rml" string="Overdue Payments"/>
+        <report id="base.res_partner_address_report" model="res.partner" name="res.partner.address" string="Labels" xml="base/res/report/partner_address.xml" xsl="base/res/report/partner_address.xsl" groups="base.group_sale_manager"/>
+        <report id="stock.report_picking_list" groups="stock.group_stock_manager" model="stock.picking" name="stock.picking.list" string="Packing list" rml="stock/report/picking.rml"/>
+        <report id="sabugar_sale_stock.delivery_res_partner_address_report" groups="stock.group_stock_manager" model="stock.picking" name="res.partner.address1" string="Labels" xml="sabugar_sale_stock/report/partner_address.xml" xsl="sabugar_sale_stock/report/partner_address.xsl"/>
+        
+	</data>
+</openerp>
+

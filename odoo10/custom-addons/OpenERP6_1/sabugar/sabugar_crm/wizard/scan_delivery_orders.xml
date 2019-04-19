@@ -1,0 +1,174 @@
+<openerp>
+    <data>
+    
+        <!-- Menifest Order -->
+
+        <record id="view_menifest_order_form" model="ir.ui.view">
+            <field name="name">view.menifest.order.create.form</field>
+            <field name="model">create.menifest</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Create Menifest">
+                    <separator string="Please make sure that each scanned order is in each line." colspan="4"/>
+                    <group colspan="2" col="2">
+                        <field name="inputs"/>
+                    </group>
+                    <group colspan="2" col="2">
+                        <field name="date"/>
+                        <field name="agency_id" widget="selection"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <button special="cancel" string="Cancel" icon="gtk-cancel"/>
+                        <button name="create_menifest" string="Create Menifest" type="object" icon="gtk-ok"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_create_menifest_wizard" model="ir.actions.act_window">
+            <field name="name">Create Menifest</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.menifest</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_menifest_order_form"/>
+            <field name="target">new</field>
+        </record>
+       
+        
+        <act_window id="action_create_menifest_sidebar"
+            key2="client_action_multi" name="Create Menifest"
+            res_model="create.menifest" src_model="stock.picking"
+            view_id="view_menifest_order_form"
+            view_mode="form" target="new" view_type="form"/>
+    
+    
+        <!-- Delivery Status -->
+
+        <record id="view_delivery_order_status_form" model="ir.ui.view">
+            <field name="name">view.delivery.order.status.form</field>
+            <field name="model">delivery.order.update</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Delivery Order Update">
+                    <separator string="Please make sure that each scanned order is in each line." colspan="4"/>
+                    <group colspan="2" col="2">
+                        <field name="inputs"/>
+                    </group>
+                    <group colspan="2" col="2">
+                        <field name="date"/>
+                        <field name="delivery_category"/>
+                        <field name="delivery_status" attrs="{'required': [('delivery_category', '=', 'status')]}"/>
+                        <field name="problem_code" attrs="{'invisible': [('delivery_status', '=', 'delivered')]}"/>
+                        <field name="comment"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <button special="cancel" string="Cancel" icon="gtk-cancel"/>
+                        <button name="update_status" string="Runsheet Issue" type="object" icon="gtk-ok"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_delivery_order_update_wizard" model="ir.actions.act_window">
+            <field name="name">Update Agency Delivery Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.order.update</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_delivery_order_status_form"/>
+            <field name="target">new</field>
+        </record>
+       
+        
+        <act_window id="action_delivery_order_status_sidebar"
+            key2="client_action_multi" name="Update Delivery Status"
+            res_model="delivery.order.update" src_model="stock.picking"
+            view_id="view_delivery_order_status_form"
+            view_mode="form" target="new" view_type="form"/>
+        
+        
+        
+        <!-- Runsheet -->
+
+        <record id="view_runsheet_order_form" model="ir.ui.view">
+            <field name="name">view.runsheet.form</field>
+            <field name="model">order.runsheet.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Runsheet">
+                    <separator string="Please make sure that each scanned order is in each line." colspan="4"/>
+                    <group colspan="2" col="2">
+                        <field name="inputs"/>
+                    </group>
+                    <group colspan="2" col="2">
+                        <field name="type_id" widget="selection"/>
+                        <field name="delivery_id" widget="selection"/>
+                        <field name="date"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <button special="cancel" string="Cancel" icon="gtk-cancel"/>
+                        <button name="issue" string="Runsheet Issue" type="object" icon="gtk-ok"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_runsheet_order_wizard" model="ir.actions.act_window">
+            <field name="name">Create Runsheet</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">order.runsheet.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_runsheet_order_form"/>
+            <field name="target">new</field>
+        </record>
+       
+        
+        <act_window id="action_runsheet_order_sidebar"
+            key2="client_action_multi" name="Create Runsheet"
+            res_model="order.runsheet.wizard" src_model="stock.picking"
+            view_id="view_runsheet_order_form"
+            view_mode="form" target="new" view_type="form"/>
+        
+        
+
+        <!-- Scan Orders by Scanner -->
+
+        <record id="view_stock_scan_orders" model="ir.ui.view">
+            <field name="name">view.stock.scan.order</field>
+            <field name="model">scan.order</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Scan Orders">
+                    <separator string="Please make sure that each scanned order is in each line." colspan="4"/>
+                    <group colspan="2" col="2">
+                        <field name="inputs"/>
+                    </group>
+                    <group col="4" colspan="4">
+                        <button special="cancel" string="Cancel" icon="gtk-cancel"/>
+                        <button name="run_orders" string="Run Scanned Orders" type="object" icon="gtk-ok"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_scan_orders" model="ir.actions.act_window">
+            <field name="name">Run Scanned Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scan.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_stock_scan_orders"/>
+            <field name="target">new</field>
+        </record>
+       
+        
+        <act_window id="action_scan_order_sidebar"
+            key2="client_action_multi" name="Scan Orders"
+            res_model="scan.order" src_model="stock.picking"
+            view_id="view_stock_scan_orders"
+            view_mode="form" target="new" view_type="form"/>
+
+    </data>
+</openerp>

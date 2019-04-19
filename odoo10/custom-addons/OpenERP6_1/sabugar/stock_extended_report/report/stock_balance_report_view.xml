@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <report id="stock_balance_report_view_id"
+                string="Stock Balance"
+                model="stock.location" 
+                name="stock.balance.new"
+                rml="addons/stock_extended_report/report/stock_extended_report_view.rml" auto="True" header="False" />
+    </data>
+</openerp>

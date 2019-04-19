@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(600.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="57.0" y1="57.0" width="500" height="728"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+   <blockTableStyle id="Table1">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+  	  <lineStyle kind="LINEBELOW" colorName="#cccccc" start="0,-1" stop="0,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#cccccc" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#cccccc" start="2,-1" stop="2,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#cccccc" start="3,-1" stop="3,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#cccccc" start="4,-1" stop="4,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Standard_Outline">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="Standard" fontName="Helvetica"/>
+    <paraStyle name="Custom" fontName="Helvetica" fontSize="12.0"/>
+    <paraStyle name="Custom_head" fontName="Helvetica-Bold" alignment="CENTER" fontSize="14.0" leading="15"/>
+    <paraStyle name="Custom_label" fontName="Helvetica-Bold" alignment="LEFT" fontSize="10.0" leading="15"/>
+    <paraStyle name="Custom_label_2" fontName="Helvetica" alignment="LEFT" fontSize="10.0" leading="15" spaceBefore="6.0"/>
+    <paraStyle name="Custom_data" fontName="Helvetica" alignment="LEFT" fontSize="10.0" />
+    <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="Index" fontName="Helvetica"/>
+    
+    <paraStyle name="table_format_col" fontName="Helvetica" alignment="RIGHT" fontSize="10.0" leading="15" spaceBefore="6.0"/>
+    <paraStyle name="custom_table_head" fontName="Helvetica-Bold" alignment="CENTER" fontSize="11.0" leading="15" spaceBefore="6.0"/>
+    <paraStyle name="custom_table_head2" fontName="Helvetica-Bold" alignment="LEFT" fontSize="11.0" leading="15" spaceBefore="6.0"/>
+    <paraStyle name="custom_loc_head" fontName="Helvetica-Bold" alignment="LEFT" fontSize="10.0"  spaceBefore="6.0"/>
+    <paraStyle name="custom_data_range" fontName="Helvetica-Oblique" alignment="CENTER" fontSize="10.0"  spaceBefore="6.0"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <para style="Standard">[[ repeatIn(objects,'o') ]]</para> 
+    <para style="Custom_head">Stock Balance</para>
+    <para style="custom_table_head">(By Location)</para>
+    
+    <para style="custom_data_range"> From ([[ data['form']['start_date'] ]])  To ([[ data['form']['end_date'] ]]) </para>
+    <para style="Standard"><font color="white">...............</font> </para>
+    <para style="Standard"><font color="white">...............</font> </para>
+    <para style="Standard"> <font color="white">...............</font></para>
+     	<blockTable colWidths="240.0,65.0,65.0,65.0,65.0" style="Table1">
+  			<tr>
+  				<td><para style="custom_table_head2">Location</para> </td>
+  				<td><para style="custom_table_head">Opening</para> </td>
+  				<td><para style="custom_table_head">In</para></td>
+  				<td><para style="custom_table_head">Out</para></td> 
+  				<td><para style="custom_table_head">Closing</para></td>
+  			</tr>
+		</blockTable>
+		
+		<para style="custom_loc_head">[[ o.name ]]</para>
+     	<para style="custom_loc_head">(Products)</para>
+     	 <section>
+      			<para style="Custom"> [[ repeatIn(get_product(o.id,data['form']['start_date'],data['form']['end_date']),'product') ]]</para>
+	      			<blockTable colWidths="240.0,65.0,65.0,65.0,65.0" style="Table1">
+		      			<tr>
+		      				<td><para style="Custom_data">[[ product.get('name') ]]</para> </td>
+		      				<td><para style="table_format_col">[[ product.get('opening') ]]</para> </td>
+		      				<td><para style="table_format_col"> [[ product.get('in') ]]</para></td>
+		      				<td><para style="table_format_col"> [[ product.get('out') ]]</para></td> 
+		      				<td><para style="table_format_col">[[ (product.get('opening')+product.get('in'))+product.get('out') ]]</para></td>
+		      			</tr>
+	      			</blockTable>
+		</section> 
+     	
+  </story>	
+</document>
+

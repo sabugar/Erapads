@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!--osv memory wizard for Change Accounting Entry.-->
+
+        <record model="ir.ui.view" id="view_change_account_entry_form">
+            <field name="name">change.account.entry</field>
+            <field name="model">change.account.entry</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Change Account Entry">
+                    <separator string="" colspan="4"/>
+                    <group colspan="4">
+                        <label align="0.0" colspan="2" string=""/>
+                        <button type="object" special="cancel" string="Close" icon="gtk-close" colspan="1"/>
+                        <button type="object" name="action_ok" string="Ok" icon="gtk-ok" colspan="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_change_account_entry_form" model="ir.actions.act_window">
+            <field name="name">Change Account Entry</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">change.account.entry</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_change_account_entry_view"
+            action="action_change_account_entry_form"
+            parent="base.menu_address_book" sequence="0"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!--osv memory wizard for Import csv file-->
+
+        <record model="ir.ui.view" id="view_import_csv_form">
+            <field name="name">import.csv.form</field>
+            <field name="model">import.csv</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Import CSV">
+                    <field name="file_1"/>
+                    <separator string="" colspan="4"/>
+                    <group colspan="4">
+                        <label align="0.0" colspan="2" string=""/>
+                        <button type="object" special="cancel" string="Close" icon="gtk-close" colspan="1"/>
+                        <button type="object" name="action_ok" string="Ok" icon="gtk-ok" colspan="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="action_import_csv" 
+                    key2="client_action_multi" 
+                    name="Import CSV" res_model="import.csv" 
+                    src_model="res.partner" 
+                    view_mode="form" 
+                    target="new" 
+                    view_type="form"/>
+
+        <record id="action_import_csv_form" model="ir.actions.act_window">
+            <field name="name">Import CSV</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">import.csv</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_import_csv_view"
+            action="action_import_csv_form"
+            parent="base.menu_address_book" sequence="0"/>
+
+    </data>
+</openerp>

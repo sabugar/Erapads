@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<menifest>
+    <menifest-line type="fields" name="id">
+        <name type="field" name="name"/>
+        <date type="field" name="date"/>
+        <agency type="field" name="agency_id.name"/>
+        <sales type="zoom" name="sale_ids">
+            <sale_name type="field" name="name"/>
+            <amount_total type="field" name="amount_total"/>
+        </sales>
+    </menifest-line>
+</menifest>
