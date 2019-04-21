@@ -15,7 +15,7 @@ class ResPartner(models.Model):
     whatsapp = fields.Char("Whatsapp")
     district_name = fields.Char(related="zip_id.district_name")
     zip_id = fields.Many2one('res.better.zip', string='City/Location')
-    agency = fields.Boolean(string='Is a Agency', default=True,
+    agency = fields.Boolean(string='Is a Agency',
                             help="Check this box if this contact is a agency.")
     open_delivery = fields.Integer(string='Open Delivery', compute='_compute_open_delivery')
     cancelled_delivery = fields.Integer(string='Cancelled Delivery', compute='_compute_cancelled_delivery')
