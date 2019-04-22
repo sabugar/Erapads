@@ -283,6 +283,8 @@
                 <field name="name" string="Phonecalls"/>
                 <field name="date"/>
                 <field name="state"/>
+                <filter string="Today" domain="[('date','&lt;=',datetime.datetime.combine(context_today(),datetime.time(23,59,59))),('date','&gt;=',datetime.datetime.combine(context_today(),datetime.time(0,0,0)))]" help="Today's Call"/>
+                <seprator/>
                 <filter string="My Phonecalls" domain="[('user_id', '=', uid)]"/>
                 <filter string="My Team" domain="[('team_id.user_id', '=', uid)]"/>
                 <filter string="Unassigned" domain="[('user_id','=',False)]"/>
