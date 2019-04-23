@@ -15,9 +15,10 @@
     'application': True,
     'installable': True,
     'auto_install': False,
-    'depends': ['base', 'stock'],
+    'depends': ['base', 'stock', 'sale'],
     'data': [
         'views/res_partner.xml',
         'security/ir.model.access.csv',
+        'views/sales_view.xml',
         ],
 }
