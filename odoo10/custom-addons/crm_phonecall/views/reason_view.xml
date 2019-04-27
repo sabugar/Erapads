@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <menuitem name="Reason" id="reason" parent="utm.menu_link_tracker_root" sequence="99" groups="base.group_no_one"/>
+   <menuitem name="Sabugar Customization" id="sabugar_customization" parent="utm.menu_link_tracker_root" sequence="99" groups="base.group_no_one"/>
+
     <!-- reason_id -->
     <record model="ir.ui.view" id="crm_phonecall_reason_tree">
         <field name="name">CRM Phonecall Reason Tree</field>
@@ -16,7 +17,7 @@
         <field name="name">CRM Phonecall Reason Form</field>
         <field name="model">call.reason</field>
         <field name="arch" type="xml">
-            <form string="Campaign">
+            <form string="Reason">
                 <group>
                     <field name="name"/>
                 </group>
@@ -32,5 +33,5 @@
     </record>
 
     <menuitem action="reason_id_act" id="menu_reason_id_act" sequence="4"
-        groups="base.group_no_one" parent="reason"/>
+        groups="base.group_no_one" parent="sabugar_customization"/>
 </odoo>

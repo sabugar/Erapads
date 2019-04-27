@@ -4,16 +4,52 @@
     <record id="sabugar_sale_order_tree_filter" model="ir.ui.view">
         <field name="name">sabugar.sale.order.filter</field>
         <field name="model">sale.order</field>
+        <field name="mode">primary</field>
         <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
         <field name="arch" type="xml">
             <data>
                <xpath expr="/search/filter[1]" position="before">
-                    <filter string="Today" name="today_sale_filter"/>
-                    <filter string="Yesterday" name="yesterday_sale_filter"/>
-                    <filter string="This Month" name="this_month_sale_filter"/>
+                    <filter string="Today" domain="[('date_order','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
+                                                    ('date_order','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" 
+                                                    name="today_sale_filter"/>
+                    <filter string="Yesterday" domain="[('date_order','&lt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')), ('date_order','&gt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" name="yesterday_sale_filter"/>
+                    <filter string="Month" domain="[('date_order','&gt;=',time.strftime('%%Y-%%m-01'))]" name="this_month_sale_filter"/>
                     <separator/>
                 </xpath> 
             </data>
         </field>
     </record>
+    
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="name">Sales Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+        <field name="search_view_id" ref="sabugar_sale_order_tree_filter"/>
+        <field name="context">{'search_default_this_month_sale_filter': 1}</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Create a Quotation, the first step of a new sale.
+                </p><p>
+                    Once the quotation is confirmed, it becomes a sales order.
+                    You'll be able to invoice it and collect payments.
+                    From the <i>Sales Orders</i> menu, you can track delivery
+                    orders or services.
+                </p>
+            </field>
+    </record>
+    
+    <record id="sabugar_sale_order_form" model="ir.ui.view">
+        <field name="name">Sabugar Sale Order View Form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='confirmation_date']" position="before">
+                <field name="customertype_id" options="{'no_create':True}"/>
+            </xpath>
+        </field>
+    </record>
+    
 </odoo>

@@ -20,5 +20,6 @@
         'views/res_partner.xml',
         'security/ir.model.access.csv',
         'views/sales_view.xml',
+        'views/customer_type_view.xml',
         ],
 }
