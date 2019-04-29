@@ -193,7 +193,7 @@
                         <field name="medium_id"/>
                     </group>
                     <group string="Reason" name="reason">
-                        <field name="reason_id"/>
+                        <field name="reason_id" options="{'no_create':True}"/>
                     </group>
                     <field name="description" placeholder="Description..."/>
                     <notebook colspan="4">

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="sabugar_order_source_form_view" model="ir.ui.view">
+        <field name="name">Order Source</field>
+        <field name="model">order.source</field>
+        <field name="arch" type="xml">
+            <form string="Order Source">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    
+    <record id="sabugar_order_source_tree_view" model="ir.ui.view">
+        <field name="name">Order Source</field>
+        <field name="model">order.source</field>
+        <field name="arch" type="xml">
+            <tree string="Order Source">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="order_source_act" model="ir.actions.act_window">
+        <field name="name">Order Source</field>
+        <field name="res_model">order.source</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="sabugar_order_source_tree_view"/>
+    </record>
+    
+    <menuitem action="order_source_act" id="menu_order_source_act" sequence="4"
+                    groups="base.group_no_one" parent="crm_phonecall.sabugar_customization"/>
+</odoo>

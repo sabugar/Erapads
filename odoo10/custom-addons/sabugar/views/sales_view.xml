@@ -15,7 +15,9 @@
                     <filter string="Yesterday" domain="[('date_order','&lt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d')), ('date_order','&gt;=', (datetime.date.today()-datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" name="yesterday_sale_filter"/>
                     <filter string="Month" domain="[('date_order','&gt;=',time.strftime('%%Y-%%m-01'))]" name="this_month_sale_filter"/>
                     <separator/>
-                </xpath> 
+                </xpath>
+                <!-- <xpath expr="/search/group[1]" position="before">
+                </xpath> -->
             </data>
         </field>
     </record>
@@ -48,6 +50,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='confirmation_date']" position="before">
                 <field name="customertype_id" options="{'no_create':True}"/>
+                <field name="ordersource_id" options="{'no_create':True}"/>
             </xpath>
         </field>
     </record>

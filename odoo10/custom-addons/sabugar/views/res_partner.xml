@@ -78,6 +78,7 @@
                     <field name="mobile1" widget="phone"/>
                     <field name="mobile2" widget="phone"/>
                     <field name="whatsapp" widget="phone"/>
+                    <field name="customersource_id" options="{'no_create':True}"/>
                 </xpath>
                 <xpath expr="//page[@name='sales_purchases']//group[@name='purchase']" position="after">
                     <group string="Agency" name="agency">
@@ -296,13 +297,44 @@
             </div>
         </field>
     </record>
+    
+    <record id="sabugar_customer_source_tree" model="ir.ui.view">
+        <field name="name">Customer Source</field>
+        <field name="model">customer.source</field>
+        <field name="arch" type="xml">
+            <tree string="Customer Source">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="sabugar_customer_source_form" model="ir.ui.view">
+        <field name="name">Customer Source</field>
+        <field name="model">customer.source</field>
+        <field name="arch" type="xml">
+            <form string="Customer Source">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
 
-
+    <record id="customer_source_act" model="ir.actions.act_window">
+        <field name="name">Customer Source</field>
+        <field name="res_model">customer.source</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="sabugar_customer_source_tree"/>
+    </record>
+    
     <menuitem
             name="India Pincode"
             id="locations_menu"
             parent="sales_team.menu_localisation"
             action="action_zip_tree"
     />
-
+    
+    <menuitem action="customer_source_act" id="menu_customer_source_act" sequence="4"
+            groups="base.group_no_one" parent="crm_phonecall.sabugar_customization"/>
+<!--  -->
 </odoo>

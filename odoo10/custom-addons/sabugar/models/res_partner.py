@@ -14,6 +14,7 @@ class ResPartner(models.Model):
     mobile2 = fields.Char("Mobile 2")
     whatsapp = fields.Char("Whatsapp")
     district_name = fields.Char(related="zip_id.district_name")
+    customersource_id = fields.Many2one('customer.source', string='Customer Source', required=True)
     zip_id = fields.Many2one('res.better.zip', string='City/Location')
     agency = fields.Boolean(string='Is a Agency',
                             help="Check this box if this contact is a agency.")
@@ -109,7 +110,7 @@ class ResPartner(models.Model):
             self.country_id = self.state_id.country_id.id
 
     # Search the name by phone also.
-    @api.depends('is_company', 'name', 'parent_id', 'phone')
+    @api.depends('is_company', 'name', 'parent_id', 'phone', 'mobile')
     def _compute_display_name(self):
         diff = dict(show_address=None, show_address_only=None, show_email=None)
         names = dict(self.with_context(**diff).name_get())
@@ -163,7 +164,7 @@ class ResPartner(models.Model):
                 return self.browse(partner_ids).name_get()
             if not partner_ids:
                 partner_ids = self.search(
-                    ['|', ('phone', operator, name), '|', ('mobile1', operator, name), '|', ('mobile2', operator, name),
+                    ['|', ('phone', operator, name), '|', ('mobile', operator, name), '|', ('mobile1', operator, name), '|', ('mobile2', operator, name),
                      ('whatsapp', operator, name)])
                 return partner_ids.name_get()
             else:
@@ -248,4 +249,10 @@ class ResCountryState(models.Model):
     _inherit = 'res.country.state'
 
     better_zip_ids = fields.One2many('res.better.zip', 'state_id', 'Cities')
+    
+class CustomerSource(models.Model):
+    _name = 'customer.source'
+    _description = 'where from customer came'
+    
+    name = fields.Char('Customer Source')
     
