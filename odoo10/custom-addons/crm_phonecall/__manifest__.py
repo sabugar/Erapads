@@ -15,11 +15,13 @@
         'crm',
         'calendar',
         'stock',
+        'sale',
     ],
     "data": [
         'security/crm_security.xml',
         'security/ir.model.access.csv',
         'wizard/crm_phonecall_to_phonecall_view.xml',
+        'wizard/create_sale_order_view.xml',
         'views/crm_phonecall_view.xml',
         'views/res_partner_view.xml',
         'views/crm_lead_view.xml',

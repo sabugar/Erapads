@@ -22,5 +22,7 @@
         'views/sales_view.xml',
         'views/customer_type_view.xml',
         'views/order_source_view.xml',
+        'views/route_view.xml',
+        'views/delivery_agency_view.xml',
         ],
 }

@@ -7,22 +7,22 @@ from odoo.exceptions import ValidationError, UserError
 
 
 class ResPartner(models.Model):
-    _inherit = "res.partner"
+    _inherit = 'res.partner'
 
     # New mobile field added
     mobile1 = fields.Char("Mobile 1")
     mobile2 = fields.Char("Mobile 2")
     whatsapp = fields.Char("Whatsapp")
     district_name = fields.Char(related="zip_id.district_name")
-    customersource_id = fields.Many2one('customer.source', string='Customer Source', required=True)
+    customersource_id = fields.Many2one('customer.source', string='Customer Source')
     zip_id = fields.Many2one('res.better.zip', string='City/Location')
     agency = fields.Boolean(string='Is a Agency',
                             help="Check this box if this contact is a agency.")
     open_delivery = fields.Integer(string='Open Delivery', compute='_compute_open_delivery')
     cancelled_delivery = fields.Integer(string='Cancelled Delivery', compute='_compute_cancelled_delivery')
     done_delivery = fields.Integer(string='Done Delivery', compute='_compute_done_delivery')
-    route = fields.Char('Route')
-    delivery_agency = fields.Char('Delivery Agency')
+    route_id = fields.Many2one('delivery.route', string='Delivery Route')
+    delivery_agency_id = fields.Many2one('delivery.agency', string='Delivery Agency')
 
     # // Makes the phone numbers unique
     @api.multi
@@ -254,5 +254,17 @@ class CustomerSource(models.Model):
     _name = 'customer.source'
     _description = 'where from customer came'
     
-    name = fields.Char('Customer Source')
+    name = fields.Char('Customer Source', required=True)
+
+class DeliveryRoute(models.Model):
+    _name = 'delivery.route'
+    _description = 'Set delivery route for Ahmedabad only'
     
+    name = fields.Char('Route', required=True)
+
+class DeliveryAgency(models.Model):
+    _name = 'delivery.agency'
+    _description = 'Name of the delivery agency who gives the delivery service.'
+    
+    name = fields.Char('Delivery Agency', required=True)
+    active = fields.Boolean(default=True)

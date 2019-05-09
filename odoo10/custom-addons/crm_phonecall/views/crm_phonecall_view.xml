@@ -129,6 +129,8 @@
         <field name="arch" type="xml">
             <form string="Phone Call">
                 <header>
+                    <button name="%(create_sale_order_action)d" string="Create Sales order" type="action"
+                            class="btn-primary"/>
                     <field name="state" nolabel="1" widget="statusbar" clickable="True"/>
                 </header>
                 <sheet string="Phone Call">

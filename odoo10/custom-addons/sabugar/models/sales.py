@@ -9,6 +9,9 @@ class SaleOrder(models.Model):
     
     customertype_id = fields.Many2one('customer.type', string='Customer Type',help='Customer is new or existing')
     ordersource_id = fields.Many2one('order.source', string='Order Source', help='Where from order came')
+    delivery_agency_id = fields.Many2one('delivery.agency', string='Delivery Agency', required=True)
+    route_id = fields.Many2one('delivery.route', string='Delivery Route')
+    
     
 class CustomerType(models.Model):
     _name = 'customer.type'

@@ -61,8 +61,8 @@
                            class="oe_edit_only"/>
                 </xpath>
                 <xpath expr="//field[@name='category_id']" position="after">
-                    <field name="route"/>
-                    <field name="delivery_agency"/>
+                    <field name="route_id" options="{'no_create':True}"/>
+                    <field name="delivery_agency_id" options="{'no_create':True}"/>
                 </xpath>
                 <field name="country_id" position="after">
                     <field name="district_name" placeholder="District Name"/>

@@ -16,8 +16,11 @@
                     <filter string="Month" domain="[('date_order','&gt;=',time.strftime('%%Y-%%m-01'))]" name="this_month_sale_filter"/>
                     <separator/>
                 </xpath>
-                <!-- <xpath expr="/search/group[1]" position="before">
-                </xpath> -->
+                <xpath expr="/search/group[1]" position="before">
+                    <filter string="Order date" domain="[]" context="{'group_by':'date_order:day'}"/>
+                    <filter string="Order Source" domain="[]" context="{'group_by':'ordersource_id'}"/>
+                    <filter string="Customer Type" domain="[]" context="{'group_by':'customertype_id'}"/>
+                </xpath>
             </data>
         </field>
     </record>
@@ -48,9 +51,23 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+<!--             <field name="date_order" attrs="{'invisible':False}"/> -->
+            <!-- <xpath expr="//field[@name='date_order']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='confirmation_date']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath> -->
             <xpath expr="//field[@name='confirmation_date']" position="before">
+                <field name="date_order"/>
                 <field name="customertype_id" options="{'no_create':True}"/>
                 <field name="ordersource_id" options="{'no_create':True}"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="delivery_agency_id" options="{'no_create':True}"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="attributes">
+                <attribute name="invisible">True</attribute>
             </xpath>
         </field>
     </record>
