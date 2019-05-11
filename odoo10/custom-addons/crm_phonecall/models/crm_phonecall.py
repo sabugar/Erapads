@@ -140,6 +140,33 @@ class CrmPhonecall(models.Model):
                 [('partner_id', '=', phonecall.partner_id.id), ('state', '=', 'done')])
             self.done_delivery = len(done_delivery_count)
 
+#     @api.model
+#     def default_get(self, fields):
+#         res=super(CrmPhonecall, self).default_get(fields)
+#         
+#         logged = self.env['crm.phonecall'].search([('partner_id', '=', self.partner_id.id)])
+#         logs = []
+#         for call in logged:
+#             values = {
+#                 'name': call.name,
+#                 'user_id': call.user_id.id or False,
+#                 'description': call.description or False,
+#                 'date': call.date,
+#                 'team_id': call.team_id or False,
+#                 'partner_id': call.partner_id.id or False,
+#                 'partner_phone': call.partner_phone,
+#                 'partner_mobile': call.partner_mobile,
+#                 'priority': call.priority,
+#                 'opportunity_id': call.opportunity_id.id or False,
+#                 'campaign_id': call.campaign_id.id,
+#                 'source_id': call.source_id.id,
+#                 'medium_id': call.medium_id.id,
+#             }
+#             logs.append((0, 0, values))
+#          
+#         res.update({'logged_call_ids':logs})
+
+
     @api.onchange('partner_id')
     def on_change_partner_id(self):
         if self.partner_id:
@@ -148,6 +175,31 @@ class CrmPhonecall(models.Model):
             self.partner_mobile1 = self.partner_id.mobile1
             self.partner_mobile2 = self.partner_id.mobile2
             self.partner_whatsapp = self.partner_id.whatsapp
+
+            logged = self.env['crm.phonecall'].search([('partner_id', '=', self.partner_id.id)])
+            logs = []
+            
+            for call in logged:
+                values = {
+                    'name': call.name,
+                    'user_id': call.user_id.id or False,
+                    'description': call.description or False,
+                    'date': call.date,
+                    'team_id': call.team_id or False,
+                    'partner_id': call.partner_id.id or False,
+                    'partner_phone': call.partner_phone,
+                    'partner_mobile': call.partner_mobile,
+                    'priority': call.priority,
+                    'opportunity_id': call.opportunity_id.id or False,
+                    'campaign_id': call.campaign_id.id,
+                    'source_id': call.source_id.id,
+                    'medium_id': call.medium_id.id,
+                    'reason_id': call.reason_id.id
+                }
+                logs.append((0, 0, values))
+             
+            self.update({'logged_call_ids':logs})
+                
         
 
     @api.multi
@@ -377,12 +429,13 @@ class Loggedcalls(models.Model):
     partner_mobile1 = fields.Char(string='Mobile-1')
     partner_mobile2 = fields.Char(string='Mobile-2')
     partner_whatsapp = fields.Char(string='Whatsapp')
+    reason_id = fields.Many2one('call.reason', string='Reason', help='Select the held reason')
     
     date = fields.Datetime(default=fields.Datetime.now)
     opportunity_id = fields.Many2one(
         comodel_name='crm.lead',
         string='Lead/Opportunity',
     )
-    campaign_id = fields.Many2one('utm.campaign', string='Campaign', readonly=True)
-    source_id = fields.Many2one('utm.source', string='Source', readonly=True)
-    medium_id = fields.Many2one('utm.medium', string='Medium', readonly=True)
+#     campaign_id = fields.Many2one('utm.campaign', string='Campaign', readonly=True)
+#     source_id = fields.Many2one('utm.source', string='Source', readonly=True)
+#     medium_id = fields.Many2one('utm.medium', string='Medium', readonly=True)
