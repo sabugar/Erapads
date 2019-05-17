@@ -6,25 +6,6 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="priority">2</field>
         <field name="arch" type="xml">
-            <data>
-                <!-- New button added -->
-                <!-- <xpath expr="//div[@name='button_box']" position="inside">
-                    <button name="open_delivery_order" type="object"
-                        class="oe_stat_button" icon="fa-codepen"
-                        string="Open Delivery Order">
-                    </button>
-                    <button name="total_delivery_order" type="object"
-                        class="oe_stat_button" icon="fa-truck"
-                        groups="base.group_user">
-                        <field name="delivery_count" widget="statinfo" string="Delivery"/>
-                    </button>
-                    <button name="total_cancellation" type="object"
-                        class="oe_stat_button" icon="fa-times-circle"
-                        string="Total Cancellation">
-                    </button>
-                </xpath> -->
-
-                <!-- Not needed field. Hide them -->
                 <xpath expr="//field[@name='function']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -43,9 +24,6 @@
                 <xpath expr="//field[@name='website']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                <!-- <xpath expr="//field[@name='catagory_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath> -->
 
                 <field name="city" position="before">
                     <field name="zip_id"
@@ -86,16 +64,25 @@
                     </group>
                 </xpath>
 
-                <!-- <xpath expr="//page[@name='internal_notes']" position="before">
-                    <page name="history_page"
-                        string="History">
-                        <group name="history_group"/>
-                    </page>
-                </xpath> -->
-            </data>
         </field>
     </record>
-
+    
+    <record id="sabugar_res_partner_inherit_tree_view" model="ir.ui.view">
+        <field name="name">sabugar.res.partner.inherit.tree</field>
+        <field name="model">res.partner</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="inherit_id" ref="base.view_partner_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="zip_id" />
+                <field name="city" />
+            </xpath>
+            <xpath expr="//field[@name='email']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    
     <!-- India Pincode -->
     <record model="ir.ui.view" id="better_zip_form">
         <field name="name">res.better.zip.form</field>
@@ -113,6 +100,7 @@
             </form>
         </field>
     </record>
+
 
     <record model="ir.ui.view" id="better_zip_tree">
         <field name="name">res.better.zip.tree</field>
@@ -268,18 +256,38 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_res_partner_filter"/>
         <field name="arch" type="xml">
-
-            <xpath expr="//search" position="inside">
-                <field name="phone" string="Phone" domain="[('phone','ilike', self)]"/>
-                <field name="mobile" string="Mobile" domain="[('mobile','ilike', self)]"/>
-                <field name="mobile1" string="Mobile1" domain="[('mobile1','ilike', self)]"/>
-                <field name="mobile2" string="Mobile2" domain="[('mobile2','ilike', self)]"/>
-                <field name="whatsapp" string="Whatsapp" domain="[('whatsapp','ilike', self)]"/>
+            <xpath expr="/search/filter[1]" position="before">
+                <field name="phone" string="Name and Phones"
+                        filter_domain="['|','|','|','|','|',
+                                    ('name', 'ilike', self),
+                                    ('phone', 'ilike', self),
+                                    ('mobile','ilike', self),
+                                    ('mobile1','ilike', self),
+                                    ('mobile2','ilike', self),
+                                    ('whatsapp','ilike', self)
+                            ]"/>
+                <field name="zip_id" string="Area/City/Pincode/Dist/State" />
             </xpath>
-
+            <xpath expr="/search/filter[3]" position="before">
+                <filter string="All Customers" 
+                        domain="['|', ('active', '=', False), 
+                                        ('active', '=', True),
+                                        ('customer', '=', 1)]" name="all_customers" />
+            </xpath>
+            <xpath expr="/search/filter[5]" position="after">
+                <filter string="Agency" domain="[('agency', '=', True)]" name="agency_filter" />
+            </xpath>
+            <xpath expr="/search/group[1]" position="before">
+                <filter string="Area Wise" domain="[]" 
+                        context="{'group_by': 'zip_id'}" />
+                <filter string="City" domain="[]" 
+                        context="{'group_by': 'city'}" />
+                <filter string="State" domain="[]" 
+                        context="{'group_by': 'state_id'}" /> 
+            </xpath>
         </field>
     </record>
-
+    
 
     <record id="res_partner_view_done_delivery_buttons" model="ir.ui.view">
         <field name="name">res.partner.view.done.delivery.buttons</field>
@@ -297,6 +305,7 @@
             </div>
         </field>
     </record>
+
     
     <record id="sabugar_customer_source_tree" model="ir.ui.view">
         <field name="name">Customer Source</field>
@@ -336,5 +345,4 @@
     
     <menuitem action="customer_source_act" id="menu_customer_source_act" sequence="4"
             groups="base.group_no_one" parent="crm_phonecall.sabugar_customization"/>
-<!--  -->
 </odoo>

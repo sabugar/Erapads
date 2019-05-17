@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
     <record id="sabugar_sale_order_tree_filter" model="ir.ui.view">
         <field name="name">sabugar.sale.order.filter</field>
@@ -7,7 +6,6 @@
         <field name="mode">primary</field>
         <field name="inherit_id" ref="sale.sale_order_view_search_inherit_sale"/>
         <field name="arch" type="xml">
-            <data>
                <xpath expr="/search/filter[1]" position="before">
                     <filter string="Today" domain="[('date_order','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59))),
                                                     ('date_order','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]" 
@@ -21,7 +19,6 @@
                     <filter string="Order Source" domain="[]" context="{'group_by':'ordersource_id'}"/>
                     <filter string="Customer Type" domain="[]" context="{'group_by':'customertype_id'}"/>
                 </xpath>
-            </data>
         </field>
     </record>
     
@@ -51,13 +48,6 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-<!--             <field name="date_order" attrs="{'invisible':False}"/> -->
-            <!-- <xpath expr="//field[@name='date_order']" position="attributes">
-                <attribute name="invisible">0</attribute>
-            </xpath>
-            <xpath expr="//field[@name='confirmation_date']" position="attributes">
-                <attribute name="invisible">0</attribute>
-            </xpath> -->
             <xpath expr="//field[@name='confirmation_date']" position="before">
                 <field name="date_order"/>
                 <field name="customertype_id" options="{'no_create':True}"/>

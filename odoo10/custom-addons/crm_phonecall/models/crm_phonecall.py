@@ -43,9 +43,7 @@ class CrmPhonecall(models.Model):
         comodel_name='res.partner',
         string='Contact',
     )
-    
-    
-    
+        
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',
@@ -97,7 +95,6 @@ class CrmPhonecall(models.Model):
     cancelled_delivery = fields.Integer(string='Cancelled Delivery', compute='_compute_cancelled_delivery')
     done_delivery = fields.Integer(string='Done Delivery', compute='_compute_done_delivery')
 
-    
     priority = fields.Selection(
         selection=[
             ('0', 'Low'),
@@ -126,12 +123,40 @@ class CrmPhonecall(models.Model):
                 [('partner_id', '=', phonecall.partner_id.id), ('state', '=', 'assigned')])
             self.open_delivery = len(open_delivery_count)
 
+    @api.multi
+    def open_delivery_view(self):
+        return {
+        'name':_('Open Delivery'),
+        'type': 'ir.actions.act_window',
+        'domain': [('partner_id', '=', self.partner_id.id), ('state', '=', 'assigned')],
+        'view_type': 'form',
+        'view_mode': 'tree,form',
+        'res_model': 'stock.picking',
+        'view_id': False,
+        'views': [(self.env.ref('stock.vpicktree').id, 'tree')],
+        'target': 'current',
+        }
+
     @api.one
     def _compute_cancelled_delivery(self):
         for phonecall in self:
             cancelled_delivery_count = self.env['stock.picking'].search(
                 [('partner_id', '=', phonecall.partner_id.id), ('state', '=', 'cancel')])
             self.cancelled_delivery = len(cancelled_delivery_count)
+
+    @api.multi
+    def cancel_delivery_view(self):
+        return {
+        'name': _('Cancel Delivery'),
+        'type': 'ir.actions.act_window',
+        'domain': [('partner_id', '=', self.partner_id.id), ('state', '=', 'cancel')],
+        'view_type': 'form',
+        'view_mode': 'tree, form',
+        'res_model': 'stock.picking',
+        'view_id': False,
+        'views': [(self.env.ref('stock.vpicktree').id, 'tree')],
+        'target': 'current',
+        }
 
     @api.one
     def _compute_done_delivery(self):
@@ -140,32 +165,19 @@ class CrmPhonecall(models.Model):
                 [('partner_id', '=', phonecall.partner_id.id), ('state', '=', 'done')])
             self.done_delivery = len(done_delivery_count)
 
-#     @api.model
-#     def default_get(self, fields):
-#         res=super(CrmPhonecall, self).default_get(fields)
-#         
-#         logged = self.env['crm.phonecall'].search([('partner_id', '=', self.partner_id.id)])
-#         logs = []
-#         for call in logged:
-#             values = {
-#                 'name': call.name,
-#                 'user_id': call.user_id.id or False,
-#                 'description': call.description or False,
-#                 'date': call.date,
-#                 'team_id': call.team_id or False,
-#                 'partner_id': call.partner_id.id or False,
-#                 'partner_phone': call.partner_phone,
-#                 'partner_mobile': call.partner_mobile,
-#                 'priority': call.priority,
-#                 'opportunity_id': call.opportunity_id.id or False,
-#                 'campaign_id': call.campaign_id.id,
-#                 'source_id': call.source_id.id,
-#                 'medium_id': call.medium_id.id,
-#             }
-#             logs.append((0, 0, values))
-#          
-#         res.update({'logged_call_ids':logs})
-
+    @api.multi
+    def done_delivery_view(self):
+        return {
+        'name': _('Done Delivery'),
+        'type': 'ir.actions.act_window',
+        'domain': [('partner_id', '=', self.partner_id.id), ('state', '=', 'done')],
+        'view_type': 'form',
+        'view_mode': 'tree,form',
+        'res_model': 'stock.picking',
+        'view_id': False,
+        'views': [(self.env.ref('stock.vpicktree').id, 'tree')],
+        'target': 'current',
+        }
 
     @api.onchange('partner_id')
     def on_change_partner_id(self):
@@ -201,7 +213,6 @@ class CrmPhonecall(models.Model):
             self.update({'logged_call_ids':logs})
                 
         
-
     @api.multi
     def write(self, values):
         """ Override to add case management: open/close dates """
@@ -375,12 +386,29 @@ class CrmPhonecall(models.Model):
             opportunity_dict = call.convert_opportunity()
             return opportunity_dict[call.id].redirect_opportunity_view()
         return opportunity_dict
+    
+    @api.multi
+    def create_sale_order_action(self):
+        last_saleorder_id = self.env['sale.order'].search([('partner_id', '=', self.partner_id.id)], order='date_order desc', limit=1)
+        return {
+        'name': _('Create Sale Order'),
+        'view_type': 'form',
+        'view_mode': 'form',
+        'res_model': 'create.saleorder',
+        'view_id': self.env.ref('crm_phonecall.create_sale_order_form_transient_view').id,
+        'type': 'ir.actions.act_window',
+        'context': {'default_partner_id': self.partner_id.id,
+                    'default_last_saleorder_id': last_saleorder_id.id},
+        'target': 'new',
+        }
+
 
 class callreason(models.Model):
     _name = 'call.reason'
     _description = 'Reason'
     
     name = fields.Char(string='Reason', required=True)
+
     
 class Loggedcalls(models.Model):
     _name = "logged.calls"
