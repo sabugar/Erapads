@@ -5,7 +5,6 @@ from odoo import models, fields, api, _
 from odoo.osv.expression import get_unaccent_wrapper
 from odoo.exceptions import ValidationError, UserError
 
-
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
@@ -23,6 +22,8 @@ class ResPartner(models.Model):
     done_delivery = fields.Integer(string='Done Delivery', compute='_compute_done_delivery')
     route_id = fields.Many2one('delivery.route', string='Delivery Route')
     delivery_agency_id = fields.Many2one('delivery.agency', string='Delivery Agency')
+    last_delivery_date = fields.Date(string='Last Delivery Date')
+    last_saleorder_date =  fields.Date(string='Last Saleorder Date')
 
     # // Makes the phone numbers unique
     @api.multi

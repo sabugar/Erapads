@@ -2,3 +2,4 @@
 
 import res_partner
 import sales
+import stock_picking
