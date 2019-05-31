@@ -30,49 +30,100 @@ class ResPartner(models.Model):
     @api.constrains('phone', 'mobile', 'mobile1', 'mobile2', 'whatsapp')
     def check_phone_numbers(self):
         if self.phone:
-            phone = self.env['res.partner'].search([('phone', '=', self.phone),('id', '!=', self.id)])
-            phone1 = self.env['res.partner'].search([('mobile', '=', self.phone), ('id', '!=', self.id)])
-            phone2 = self.env['res.partner'].search([('mobile1', '=', self.phone), ('id', '!=', self.id)])
-            phone3 = self.env['res.partner'].search([('mobile2', '=', self.phone), ('id', '!=', self.id)])
-            phone4 = self.env['res.partner'].search([('whatsapp', '=', self.phone), ('id', '!=', self.id)])
-            if phone or phone1 or phone2 or phone3 or phone4:
-                raise UserError(_('Phone number must be unique!'))
+            search_id = self.search(['|', '&', ('active','=',False),('active','=',True),'|', '|', '|', '|', ('phone','=',self.phone), ('mobile','=',self.phone),  ('mobile1','=',self.phone), ('mobile2','=',self.phone), ('whatsapp', '=', self.phone)])
+            if len(search_id) > 1:
+                raise ValidationError(_('This phone already of another Customer.'))
+#            check the phone number size and digit
+            if len(self.phone) != 10:
+                raise ValidationError(_('Error ! phone number must be in 10 digit.'))
+            elif not (self.phone.isdigit()):
+                raise ValidationError(_('Error ! phone number must be in digit'))
 
         if self.mobile:
-            mobile = self.env['res.partner'].search([('phone', '=', self.mobile),('id', '!=', self.id)])
-            mobile1 = self.env['res.partner'].search([('mobile', '=', self.mobile), ('id', '!=', self.id)])
-            mobile2 = self.env['res.partner'].search([('mobile1', '=', self.mobile), ('id', '!=', self.id)])
-            mobile3 = self.env['res.partner'].search([('mobile2', '=', self.mobile), ('id', '!=', self.id)])
-            mobile4 = self.env['res.partner'].search([('whatsapp', '=', self.mobile), ('id', '!=', self.id)])
-            if mobile or mobile1 or mobile2 or mobile3 or mobile4:
-                raise UserError(_('Mobile number must be unique!'))
+            search_id = self.search(['|', '&', ('active','=',False),('active','=',True),'|', '|', '|', '|', ('phone','=',self.mobile), ('mobile','=',self.mobile),  ('mobile1','=',self.mobile), ('mobile2','=',self.mobile), ('whatsapp', '=', self.mobile)])
+            if len(search_id) > 1:
+                raise ValidationError(_('This mobile already of another Customer.'))
+#            check the phone number size and digit
+            if len(self.mobile) != 10:
+                raise ValidationError(_('Error ! mobile number must be in 10 digit.'))
+            elif not (self.mobile.isdigit()):
+                raise ValidationError(_('Error ! mobile number must be in digit'))
 
         if self.mobile1:
-            mobile1 = self.env['res.partner'].search([('phone', '=', self.mobile1),('id', '!=', self.id)])
-            mobile11 = self.env['res.partner'].search([('mobile', '=', self.mobile1), ('id', '!=', self.id)])
-            mobile12 = self.env['res.partner'].search([('mobile1', '=', self.mobile1), ('id', '!=', self.id)])
-            mobile13 = self.env['res.partner'].search([('mobile2', '=', self.mobile1), ('id', '!=', self.id)])
-            mobile14 = self.env['res.partner'].search([('whatsapp', '=', self.mobile1), ('id', '!=', self.id)])
-            if mobile1 or mobile11 or mobile12 or mobile13 or mobile14:
-                raise UserError(_('Mobile1 number must be unique!'))
+            search_id = self.search(['|', '&', ('active','=',False),('active','=',True),'|', '|', '|', '|', ('phone','=',self.mobile1), ('mobile','=',self.mobile1),  ('mobile1','=',self.mobile1), ('mobile2','=',self.mobile1), ('whatsapp', '=', self.mobile1)])
+            if len(search_id) > 1:
+                raise ValidationError(_('This mobile1 already of another Customer.'))
+#            check the phone number size and digit
+            if len(self.mobile1) != 10:
+                raise ValidationError(_('Error ! mobile1 number must be in 10 digit.'))
+            elif not (self.mobile1.isdigit()):
+                raise ValidationError(_('Error ! mobile1 number must be in digit'))
 
         if self.mobile2:
-            mobile2 = self.env['res.partner'].search([('phone', '=', self.mobile2),('id', '!=', self.id)])
-            mobile21 = self.env['res.partner'].search([('mobile', '=', self.mobile2), ('id', '!=', self.id)])
-            mobile22 = self.env['res.partner'].search([('mobile1', '=', self.mobile2), ('id', '!=', self.id)])
-            mobile23 = self.env['res.partner'].search([('mobile2', '=', self.mobile2), ('id', '!=', self.id)])
-            mobile24 = self.env['res.partner'].search([('whatsapp', '=', self.mobile2), ('id', '!=', self.id)])
-            if mobile2 or mobile21 or mobile22 or mobile23 or mobile24:
-                raise UserError(_('Mobile2 number must be unique!'))
+            search_id = self.search(['|', '&', ('active','=',False),('active','=',True),'|', '|', '|', '|', ('phone','=',self.mobile2), ('mobile','=',self.mobile2),  ('mobile1','=',self.mobile2), ('mobile2','=',self.mobile2), ('whatsapp', '=', self.mobile2)])
+            if len(search_id) > 1:
+                raise ValidationError(_('This mobile2 already of another Customer'))
+#            check the phone number size and digit
+            if len(self.mobile2) != 10:
+                raise ValidationError(_('Error ! mobile2 number must be in 10 digit.'))
+            elif not (self.mobile2.isdigit()):
+                raise ValidationError(_('Error ! mobile2 number must be in digit'))
 
         if self.whatsapp:
-            whatsapp = self.env['res.partner'].search([('phone', '=', self.whatsapp), ('id', '!=', self.id)])
-            whatsapp1 = self.env['res.partner'].search([('mobile', '=', self.whatsapp), ('id', '!=', self.id)])
-            whatsapp2 = self.env['res.partner'].search([('mobile1', '=', self.whatsapp), ('id', '!=', self.id)])
-            whatsapp3 = self.env['res.partner'].search([('mobile2', '=', self.whatsapp), ('id', '!=', self.id)])
-            whatsapp4 = self.env['res.partner'].search([('whatsapp', '=', self.whatsapp), ('id', '!=', self.id)])
-            if whatsapp or whatsapp1 or whatsapp2 or whatsapp3 or whatsapp4:
-                raise UserError(_('Whatsapp number must be unique!'))
+            search_id = self.search(['|', '&', ('active','=',False),('active','=',True),'|', '|', '|', '|', ('phone','=',self.whatsapp), ('mobile','=',self.whatsapp),  ('mobile1','=',self.whatsapp), ('mobile2','=',self.whatsapp), ('whatsapp', '=', self.whatsapp)])
+            if len(search_id) > 1:
+                raise ValidationError(_('This whatsapp already of another Customer'))
+#            check the phone number size and digit
+            if len(self.whatsapp) != 10:
+                raise ValidationError(_('Error ! whatsapp number must be in 10 digit.'))
+            elif not (self.whatsapp.isdigit()):
+                raise ValidationError(_('Error ! whatsapp number must be in digit'))
+    
+        
+#         if self.phone:
+#             phone = self.env['res.partner'].search([('phone', '=', self.phone),('id', '!=', self.id)])
+#             phone1 = self.env['res.partner'].search([('mobile', '=', self.phone), ('id', '!=', self.id)])
+#             phone2 = self.env['res.partner'].search([('mobile1', '=', self.phone), ('id', '!=', self.id)])
+#             phone3 = self.env['res.partner'].search([('mobile2', '=', self.phone), ('id', '!=', self.id)])
+#             phone4 = self.env['res.partner'].search([('whatsapp', '=', self.phone), ('id', '!=', self.id)])
+#             if phone or phone1 or phone2 or phone3 or phone4:
+#                 raise UserError(_('Phone number must be unique!'))
+# 
+#         if self.mobile:
+#             mobile = self.env['res.partner'].search([('phone', '=', self.mobile),('id', '!=', self.id)])
+#             mobile1 = self.env['res.partner'].search([('mobile', '=', self.mobile), ('id', '!=', self.id)])
+#             mobile2 = self.env['res.partner'].search([('mobile1', '=', self.mobile), ('id', '!=', self.id)])
+#             mobile3 = self.env['res.partner'].search([('mobile2', '=', self.mobile), ('id', '!=', self.id)])
+#             mobile4 = self.env['res.partner'].search([('whatsapp', '=', self.mobile), ('id', '!=', self.id)])
+#             if mobile or mobile1 or mobile2 or mobile3 or mobile4:
+#                 raise UserError(_('Mobile number must be unique!'))
+# 
+#         if self.mobile1:
+#             mobile1 = self.env['res.partner'].search([('phone', '=', self.mobile1),('id', '!=', self.id)])
+#             mobile11 = self.env['res.partner'].search([('mobile', '=', self.mobile1), ('id', '!=', self.id)])
+#             mobile12 = self.env['res.partner'].search([('mobile1', '=', self.mobile1), ('id', '!=', self.id)])
+#             mobile13 = self.env['res.partner'].search([('mobile2', '=', self.mobile1), ('id', '!=', self.id)])
+#             mobile14 = self.env['res.partner'].search([('whatsapp', '=', self.mobile1), ('id', '!=', self.id)])
+#             if mobile1 or mobile11 or mobile12 or mobile13 or mobile14:
+#                 raise UserError(_('Mobile1 number must be unique!'))
+# 
+#         if self.mobile2:
+#             mobile2 = self.env['res.partner'].search([('phone', '=', self.mobile2),('id', '!=', self.id)])
+#             mobile21 = self.env['res.partner'].search([('mobile', '=', self.mobile2), ('id', '!=', self.id)])
+#             mobile22 = self.env['res.partner'].search([('mobile1', '=', self.mobile2), ('id', '!=', self.id)])
+#             mobile23 = self.env['res.partner'].search([('mobile2', '=', self.mobile2), ('id', '!=', self.id)])
+#             mobile24 = self.env['res.partner'].search([('whatsapp', '=', self.mobile2), ('id', '!=', self.id)])
+#             if mobile2 or mobile21 or mobile22 or mobile23 or mobile24:
+#                 raise UserError(_('Mobile2 number must be unique!'))
+# 
+#         if self.whatsapp:
+#             whatsapp = self.env['res.partner'].search([('phone', '=', self.whatsapp), ('id', '!=', self.id)])
+#             whatsapp1 = self.env['res.partner'].search([('mobile', '=', self.whatsapp), ('id', '!=', self.id)])
+#             whatsapp2 = self.env['res.partner'].search([('mobile1', '=', self.whatsapp), ('id', '!=', self.id)])
+#             whatsapp3 = self.env['res.partner'].search([('mobile2', '=', self.whatsapp), ('id', '!=', self.id)])
+#             whatsapp4 = self.env['res.partner'].search([('whatsapp', '=', self.whatsapp), ('id', '!=', self.id)])
+#             if whatsapp or whatsapp1 or whatsapp2 or whatsapp3 or whatsapp4:
+#                 raise UserError(_('Whatsapp number must be unique!'))
 
 
     @api.one
