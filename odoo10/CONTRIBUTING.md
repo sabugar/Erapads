@@ -1,4 +1,4 @@
-Contributing to Odoo
+Contributing to Odoo - For The Good
 ====================
 
 [Full contribution guidelines](https://github.com/odoo/odoo/wiki/Contributing)
